@@ -1,5 +1,5 @@
 
-Pcs
+PCS (Primate Comparative Socioecology)
 ========================
 
 Below you will find basic setup and deployment instructions for the pcs

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %} - Collaborators{% endblock %}
+
+{% block content %}
+<h1>Collaborators</h1>
+{% for section in sections %}
+<div class="row row-eq-height"><h2>{{ section.title }}</h2>
+{% for member in section.members %}
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-2">
+                <img width=80px src="{{ member.picture }}" class="collab-photo img-rounded"/>
+            </div>
+            <div class="col-md-10">
+                <div class="collab-name text-left">{% if member.link %}<a href="{{ member.link }}">{% endif %}<strong>{{ member.name }}</strong>{% if member.link %}</a>{% endif %}</div>
+                <div class="collab-desc text-left">{{ member.description }}</div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<!--<div class="clearfix"/>-->
+{% endfor %}
+{% endblock %}

@@ -1,0 +1,25 @@
+[{
+  "pk": 1, 
+  "model": "sites.site", 
+  "fields": {
+    "domain": "project.nunn-lab.org", 
+    "name": "project.nunn-lab.org"
+  }
+},
+{
+  "pk": 1, 
+  "model": "auth.user", 
+  "fields": {
+    "username": "root", 
+    "first_name": "", 
+    "last_name": "", 
+    "is_active": true, 
+    "is_superuser": true, 
+    "is_staff": true, 
+    "groups": [],
+    "user_permissions": [],
+    "password": "pbkdf2_sha256$10000$vqgmqPHuYSIo$p95fYr3UqlvArLXfkNffq9vcxIHs9l72JBQzCPSTyV8=", 
+    "email": "django@biology.duke.edu", 
+    "date_joined": "2013-10-31T03:09:00Z"
+  }
+}]

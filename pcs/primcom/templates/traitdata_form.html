@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+
+<!--{% block style %}-->
+<!--<head>-->
+  <!--<link href="{{ STATIC_URL }}primcom/css/primcom.css" rel="stylesheet" type="text/css" media="screen" />-->
+<!--</head>-->
+<!--{% endblock %}-->
+
+{% block content %}
+<div class="container">
+<h1>Primate Comparative Database</h1>
+<br />
+{% if messages %}
+    {% for message in messages %}
+    <div class="message">{{ message }}</div>
+    {% endfor %}
+<br />
+{% endif %}
+{% if form.non_field_errors %}
+<ul class="errorlist">
+    <b>Errors</b>:
+    {% for e in form.non_field_errors %}
+    <li>{{ e }}</li>
+    {% endfor %}
+</ul>
+<br />
+{% endif %}
+<form id="id_trait_form" method="POST">{% csrf_token %}
+
+    <div class="fieldWrapper{% if form.who_entered.errors %} field_error{% endif %}">
+        {{ form.who_entered.errors }}
+        <span class="label">{{ form.who_entered.label }}:</span> {{ form.who_entered }}
+    </div>
+    <div class="clear"></div>
+<h2>Reference</h2>
+    <div class="fieldWrapper">
+    {{ form.reference_id.errors }}
+    <div class-"fieldWrapper"><span class="label">{{ form.reference_id.label }}:</span> {{ form.reference_id }}</div>
+    <div class="clear"></div>
+    <div id="id_new_reference">
+    <div class="fieldWrapper{% if form.citation.errors %} field_error{% endif %}">
+        {{ form.citation.errors }}
+        <span class="label">{{ form.citation.label }}:</span> {{ form.citation }}
+        <div class="clear"></div>
+    </div> 
+    <div class="fieldWrapper{% if form.full_reference.errors %} field_error{% endif %}">
+        {{ form.full_reference.errors }}
+        <span class="label">{{ form.full_reference.label }}:</span> {{ form.full_reference }}
+        <div class="clear"></div>
+        <div class="help_text"><b>E.g. Journal Article:</b> Nunn, C. L., P. H. Thrall, and F. H. Leendertz. 2011. The spread of fecally transmitted infections in socially-structured populations. PLoS ONE 6:e21677.<br /><b>E.g. Book Chapter:</b> Nunn, C. L., and van Schaik, C. P. 2001. Reconstructing the behavioral ecology of extinct primates. Pages 159-216 in J. M. Plavcan, R. F. Kay, W. L. Jungers, and C. P. van Schaik, eds. Reconstructing Behavior in the Fossil Record, Plenum, New York.</div>
+    </div>  
+    <div class="clear"></div>
+    <div class="fieldWrapper">
+        {{ form.abstract.errors }}
+        <span class="label">{{ form.abstract.label }}:</span><br />{{ form.abstract }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.notes.errors }}
+        <span class="label">{{ form.notes.label }}:</span><br />{{ form.notes }}
+    </div>
+    </div>
+    </div>
+    <div class="clear"></div>
+    <h2>Taxonomy</h2>
+    <div class="fieldWrapper">
+        <div class="fieldWrapper"><span class="label">{{ form.taxonomy_id.label }}</span>: {{ form.taxonomy_id}}</div>
+        <div id="id_new_taxonomy">
+        <div class="fieldWrapper{% if form.species_reported_name.errors %} field_error{% endif %}">
+            {{ form.species_reported_name.errors }}
+            <span class="label">{{ form.species_reported_name.label }}:</span> {{ form.species_reported_name }}
+        </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <h2>Location</h2>
+    <div class="fieldWrapper">
+        {{ form.site_name_id.errors }}
+        <div class-"fieldWrapper"><span class="label">{{ form.location_id.label }}:</span> {{ form.location_id }}</div>
+        <div class="clear"></div>
+        <div id="id_new_location">
+        <div class="fieldWrapper{% if form.site_name.errors %} field_error{% endif %}">
+            {{ form.site_name.errors }}
+            <span class="label">{{ form.site_name.label }}:</span> {{ form.site_name }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.park_reserve_name.errors }}
+            <span class="label">{{ form.park_reserve_name.label }}:</span> {{ form.park_reserve_name }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.nation.errors }}
+            <span class="label">{{ form.nation.label }}:</span> {{ form.nation }}
+        </div>
+        <div class="clear"></div>
+        <div class="fieldWrapper">
+            {{ form.latitude.errors }}
+            <span class="label">{{ form.latitude.label }}:</span> {{ form.latitude }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.longitude.errors }}
+            <span class="label">{{ form.longitude.label }}:</span> {{ form.longitude }}
+        </div>
+        <div class="clear"></div>
+        <div class="help_text">Decimal notation, i.e., Latitude: 0.5, Longitude: 30.4 (North & East are positive)</div>
+        <div class="clear"></div>
+        <div class="fieldWrapper">
+            {{ form.location_notes.errors }}
+            <span class="label">{{ form.location_notes.label }}:</span> <br />{{ form.location_notes }}
+        </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <h2>Traits</h2>
+    <div class="fieldWrapper">
+        {{ form.study_duration.errors }}
+        <span class="label">{{ form.study_duration.label }}:</span> {{ form.study_duration }}
+    </div>
+    <div class="fieldWrapper">
+        {{ form.is_wild.errors }}
+        <span class="label">{{ form.is_wild.label }}:</span> {{ form.is_wild }}
+    </div>
+    <div class="clear"></div>
+    <br />
+    <div>
+      <div>
+      <div class="trait label trait_name"><b>Trait</b></div>
+      <div class="trait_box trait_min label"><b>Min</b></div>
+      <div class="trait_box trait_max label"><b>Max</b></div>
+      <div class="trait_box trait_mean label"><b>Mean</b></div>
+      <div class="trait_box trait_median label"><b>Median</b></div>
+      <div class="trait_box trait_stddev label"><b>S. D.</b></div>
+      <div class="trait_box trait_samplesize label"><b>Sample Size</b></div>
+      <div class="trait_box trait_sampletype label"><b>Sample Type</b></div>
+      <div class="trait_box trait_basis label"><b>Basis</b></div>     
+      <div class="trait_box trait_sex label"><b>Sex</b></div>     
+      <div class="trait_box trait_notes label"><b>Notes</b></div>
+      <div class="clear"></div>
+      </div>
+    {% for f in auto_fields %}
+      <div class="trait_container">
+      <div class="trait trait_name">{{ f.0 }}</div>
+      <div class="trait_box trait_min">{{ f.1 }}</div>
+      <div class="trait_box trait_max">{{ f.2 }}</div>
+      <div class="trait_box trait_mean">{{ f.3 }}</div>
+      <div class="trait_box trait_median">{{ f.4 }}</div>
+      <div class="trait_box trait_stddev">{{ f.5 }}</div>
+      <div class="trait_box trait_samplesize">{{ f.6 }}</div>
+      <div class="trait_box trait_sampletype">{{ f.7 }}</div>
+      <div class="trait_box trait_basis">{{ f.8 }}</div>
+      <div class="trait_box trait_sex">{{ f.9 }}</div>
+      <div class="trait_box trait_notes">{{ f.10 }}</div>
+      <div class="clear"></div>
+      </div>
+    {% endfor %}
+    </div>
+    <br />
+    <div class="center"></div><input type="submit" value="Save Data"/></div>
+
+</form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="{{ STATIC_URL }}primcom/js/add.js"></script>
+{% endblock %}

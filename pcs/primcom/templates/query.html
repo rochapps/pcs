@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %} - Query Data{% endblock %}
+
+{% block content %}
+<h1>Query Data</h1>
+
+<h2>How to Use</h2>
+<p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues. It va esser tam simplic quam Occidental: in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.</p>
+
+<form id="id_query_form" method="POST" role="form" action="csv">{% csrf_token %}
+
+    <!-- Traits -->
+    <div id="traits" class="container">
+        <h2>Select Traits</h2>
+        <div class="row form-group">
+            <label>
+                <input type="checkbox" value="" class="toggle-button"> Select/Deselect all traits
+            </label>
+        </div>
+        {% for category_id, category_name, traits in traits_by_category %}
+        <div id="category_{{ category_id }}" class="row text-left">
+            <div class="row">
+                <label>
+                    <span class="subsection_hdr">{{ category_name }}</span> (<input type="checkbox" value="" class="toggle-button-sub"> Select/Deselect traits)
+                </label>
+            </div>
+            {% for trait_id, trait_name in traits %}
+            <div class="col-md-4">
+                <label id="id_trait_selection">
+                    <input type="checkbox" name="traits" value="{{ trait_id }}"> {{ trait_name }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        <br />
+        {% endfor %}
+    </div>
+
+    <!-- Results -->
+    <!--<div id="results" class="container">
+        <h2>Select Results</h2>
+        <div class="row text-left">
+            {% for choice_id, choice_label in form.results.field.choices %}
+            <div class="col-md-4">
+                <label id="id_results_selection">
+                    <input type="radio" name="results" value="{{ choice_id }}"{% if choice_id == form.results.field.initial %} checked{% endif %}> {{ choice_label }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>-->
+
+    <!-- Taxonomy -->
+    <div id="taxonomy" class="container-fluid">
+        <h2>Select Taxonomy</h2>
+        <div class="row text-center">
+            {% for choice_id, choice_label in form.taxonomy.field.choices %}
+            <div>
+                <label id="id_taxonomy_selection">
+                    <input type="radio" name="taxonomy" value="{{ choice_id }}"{% if chchoice_id == form.taxonomy.field.initial %} checked{% endif %}> {{ choice_label }}
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Species, Raw-->
+    <div id="species_raw" class="container species_container">
+        <h2>Select Species (Raw)</h2>
+        <div class="row form-group">
+            <label><input type="checkbox" value="" class="toggle-button" checked> Select/Deselect all species</label>
+        </div>
+        <div class="row text-left">
+{% for choice_id, choice_label in form.species_raw.field.choices %}
+            <div class="col-md-4">
+                <label id="id_species1_selection">
+                    <input type="checkbox" name="species_raw" value="{{ choice_id }}" checked> <span class="species_name">{{ choice_label }}</span>
+                </label>
+            </div>
+{% endfor %}
+        </div>
+    </div>
+
+    <!-- Species, Corbett & Hill -->
+    <div id="species_ch" class="container species_container">
+        <h2>Select Species (Corbett & Hill)</h2>
+        <div class="row form-group">
+            <label><input type="checkbox" value="" class="toggle-button" checked> Select/Deselect all species</label>
+        </div>
+        <div class="row text-left">
+            {% for choice_id, choice_label in form.species_ch.field.choices %}
+            <div class="col-md-4">
+                <label id="id_species2_selection">
+                    <input type="checkbox" name="species_ch" value="{{ choice_id }}" checked> <span class="species_name">{{ choice_label }}</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Species, Wilson & Reeder-->
+    <div id="species_wr" class="container species_container">
+        <h2>Select Species (Wilson & Reeder)</h2>
+        <div class="row form-group">
+            <label><input type="checkbox" value="" class="toggle-button" checked> Select/Deselect all species</label>
+        </div>
+        <div class="row text-left">
+            {% for choice_id, choice_label in form.species_wr.field.choices %}
+            <div class="col-md-4">
+                <label id="id_species1_selection">
+                    <input type="checkbox" name="species_wr" value="{{ choice_id }}" checked> <span class="species_name">{{ choice_label }}</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="clear">&nbsp;</div>
+
+    <div class="row form-group">
+        <input type="submit" id="queryDataButton" class="btn btn-primary" value="Download Results" />
+    </div>
+</form>
+{% endblock %}
