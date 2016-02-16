@@ -1,19 +1,18 @@
 '''Main URL configuration for the primcom application.'''
 
-from django.conf.urls import patterns
+from django.conf.urls import url
 
+from . import views
 
-urlpatterns = patterns(
-  'primcom.views',
-  (r'^$', 'home'),
-  (r'^info$', 'info'),
-  (r'^collaborators$', 'collaborators'),
-  (r'^query$', 'query'),
-  (r'^csv$', 'csv_data'),
-  (r'^methods', 'methods'),
-  (r'^archive$', 'archive'),
-  (r'^contact$', 'contact'),
-
+urlpatterns = [
+  url(r'^$', views.home),
+  url(r'^info$', views.info),
+  url(r'^collaborators$', views.collaborators),
+  url(r'^query$', views.query),
+  url(r'^csv$', views.csv_data),
+  url(r'^methods', views.methods),
+  url(r'^archive$', views.archive),
+  url(r'^contact$', views.contact),
   # The main "add" page
-  (r'^add$', 'add'),
-)
+  url(r'^add$', views.add),
+]

@@ -1,23 +1,23 @@
 from django import forms
 from django.forms import TextInput, Textarea
 
-from models import TraitData, Trait, Reference, Location, Taxonomy
+from .models import TraitData, Trait, Reference, Location, Taxonomy
 
 
 class TraitDataForm(forms.Form):
     who_entered = forms.CharField(
-      max_length=3, 
+      max_length=3,
       widget=TextInput(attrs={'size': 3}))
     reference_id = forms.ChoiceField(
-      choices=Reference.get_choices(), 
+      choices=Reference.get_choices(),
       label='Reference')
     citation = forms.CharField(
       max_length=100,
-      required=False, 
+      required=False,
       widget=TextInput(attrs={'size': 150}))
     full_reference = forms.CharField(
-      max_length=1024, 
-      required=False, 
+      max_length=1024,
+      required=False,
       widget=TextInput(attrs={'size': 150}))
     taxonomy_id = forms.ChoiceField(
       choices=Taxonomy.get_choices_raw(),
@@ -29,32 +29,32 @@ class TraitDataForm(forms.Form):
       choices=Location.get_choices(),
       label='Location')
     site_name = forms.CharField(
-      max_length=100, 
+      max_length=100,
       required=False)
     park_reserve_name = forms.CharField(
-      max_length=100, 
+      max_length=100,
       required=False)
     nation = forms.CharField(
-      max_length=100, 
+      max_length=100,
       required=False)
     latitude =  forms.FloatField(
-      required=False, 
+      required=False,
       widget=TextInput(attrs={'size': 4}))
     longitude = forms.FloatField(
-      required=False, 
+      required=False,
       widget=TextInput(attrs={'size': 4}))
     location_notes = forms.CharField(
-      label='Notes', 
-      required=False, 
+      label='Notes',
+      required=False,
       widget=Textarea(attrs={'rows': 6, 'cols': 100}))
     notes = forms.CharField(
       required=False,
       widget=Textarea(attrs={'rows': 6, 'cols': 100}))
     abstract = forms.CharField(
-      required=False, 
+      required=False,
       widget=Textarea(attrs={'rows': 6, 'cols': 100}))
     study_duration = forms.FloatField(
-      label='Study Duration', 
+      label='Study Duration',
       required=False,
       widget=TextInput(attrs={'size': 4}))
     is_wild = forms.BooleanField(required=False)
@@ -111,7 +111,7 @@ class TraitDataForm(forms.Form):
                 self._errors['full_reference'] = self.error_class([
                   'This field is required.'])
                 del cleaned_data['full_reference']
-            
+
         # Species reported name must be specified when adding a new Taxonomy
         if int(cleaned_data['taxonomy_id']) == -1:
             if not cleaned_data.get('species_reported_name'):

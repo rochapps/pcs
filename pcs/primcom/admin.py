@@ -1,5 +1,6 @@
 from django.contrib import admin
-from models import Reference, Taxonomy, Location, TraitData
+from .models import Reference, Taxonomy, Location, TraitData
+
 
 admin.site.register(Reference)
 admin.site.register(Taxonomy)

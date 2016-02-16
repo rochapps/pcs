@@ -7,8 +7,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 
-from models import TraitData, PublicTraitData, Trait, Taxonomy, Location, Reference, PublicVersion
-from forms import TraitDataForm, QueryDataForm
+from .models import TraitData, PublicTraitData, Trait, Taxonomy, Location, Reference, PublicVersion
+# from .forms import TraitDataForm, QueryDataForm
 
 
 def _get_auto_fields(form):
@@ -32,7 +32,7 @@ def _lookup_reference(reference_id):
 
 def _lookup_taxonomy(taxonomy_id):
     return Taxonomy.objects.get(id=taxonomy_id)
-    
+
 def _lookup_location(location_id):
     return Location.objects.get(id=location_id)
 
@@ -93,11 +93,11 @@ def csv_data(request):
     if request.method == 'POST':
         form = QueryDataForm(request.POST)
         if form.is_valid():
-            print "Form IS valid!"
-            print form.errors
+            print("Form IS valid!")
+            print(form.errors)
         else:
-            print "Form is NOT valid!"
-            print form.errors
+            print("Form is NOT valid!")
+            print(form.errors)
 
         # Handle form processing
         #form = QueryDataForm(request.POST)
@@ -112,12 +112,14 @@ def csv_data(request):
             taxonomy = 'ch'
         import pprint
         species = request.POST.getlist(taxonomy_choice)
-        print "Species:"; pprint.pprint(species)
+        print("Species:")
+        pprint.pprint(species)
         traits = request.POST.getlist('traits')
-        print "Traits:"; pprint.pprint(traits)
+        print("Traits:")
+        pprint.pprint(traits)
 
         for q in request.POST:
-            print "{0} == {1}".format(q,request.POST.getlist(q))
+            print("{0} == {1}".format(q,request.POST.getlist(q)))
 
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
@@ -142,10 +144,10 @@ def query(request):
     if request.method == 'POST':
         form = QueryDataForm(request.POST)
         if form.is_valid():
-            print "Form IS valid!"
-            print form.errors
+            print("Form IS valid!")
+            print(form.errors)
         else:
-            print "Form is NOT valid!"
+            print("Form is NOT valid!")
             context['form'] = QueryDataForm(request.POST)
     else:
         context['form'] = QueryDataForm()
@@ -179,9 +181,9 @@ def add(request):
     context = dict()
     if request.method == 'POST':
         form = TraitDataForm(request.POST)
-        if form.is_valid(): 
+        if form.is_valid():
             # Handle Taxonomy data
-            if int(form.cleaned_data['taxonomy_id']) == -1:    
+            if int(form.cleaned_data['taxonomy_id']) == -1:
                 taxonomy = Taxonomy()
                 taxonomy.who_entered = form.cleaned_data['who_entered']
                 taxonomy.species_reported_name = \
@@ -191,7 +193,7 @@ def add(request):
             else:
                 taxonomy = _lookup_taxonomy(
                   form.cleaned_data['taxonomy_id'])
-            
+
             # Handle Location data
             if int(form.cleaned_data['location_id']) == -1:
                 location = Location()
@@ -207,7 +209,7 @@ def add(request):
                 messages.success(request, 'New location successfully saved.')
             else:
                 location = _lookup_location(form.cleaned_data['location_id'])
-            
+
             # Handle Reference data
             if int(form.cleaned_data['reference_id']) == -1:
                 reference = Reference()
@@ -219,7 +221,7 @@ def add(request):
                 messages.success(request, 'New reference successfully saved.')
             else:
                 reference = _lookup_reference(form.cleaned_data['reference_id'])
-            
+
             # Handle TraitData data
             td_count = 0
             for td in Trait.objects.all():
@@ -254,7 +256,7 @@ def add(request):
                         td_count += 1
 
             if td_count:
-                messages.success(request, 
+                messages.success(request,
                   'New trait data ({0}) successfully added.'.format(td_count))
             return redirect('primcom.views.add')
         else:
@@ -265,6 +267,4 @@ def add(request):
     # The initial "add" page
     context['auto_fields'] = _get_auto_fields(context['form'])
     context['add_active'] = True
-    return render_to_response(
-      'traitdata_form.html', context, context_instance=RequestContext(request))
-       
+    return render_to_response('traitdata_form.html', context, context_instance=RequestContext(request))

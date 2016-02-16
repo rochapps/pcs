@@ -38,7 +38,7 @@ class TraitData(models.Model):
     trait_value = models.FloatField()
     SEX_CHOICES = (
         ('m', 'Male'),
-        ('f', 'Female'))    
+        ('f', 'Female'))
     sex = models.CharField(max_length=1, blank=True, null=True,
       choices=SEX_CHOICES)
     sample_size = models.SmallIntegerField()
@@ -46,17 +46,17 @@ class TraitData(models.Model):
         ('groups', 'Groups'),
         ('individuals', 'Individuals'),
         ('events', 'Events'),
-        ('na', 'NA'),        
+        ('na', 'NA'),
     )
-    sample_type = models.CharField(max_length=20, null=True, 
+    sample_type = models.CharField(max_length=20, null=True,
       choices=SAMPLE_TYPES)
     BASIS_CHOICES = (
         ('present', 'Present'),
         ('converted', 'Converted'),
         ('calculated', 'Calculated'),
-        ('inferred', 'Inferred'),        
+        ('inferred', 'Inferred'),
     )
-    basis = models.CharField(max_length=20, null=True, 
+    basis = models.CharField(max_length=20, null=True,
       choices=BASIS_CHOICES)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -104,7 +104,7 @@ class PublicTraitData(models.Model):
       choices=BASIS_CHOICES)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    version = models.ForeignKey('PublicVersion', null=True, default=PublicVersion.get_latest_version)
+    version = models.ForeignKey('PublicVersion', null=True)
 
     @classmethod
     def get_csv_headers(cls):
@@ -176,16 +176,16 @@ class Reference(models.Model):
     full_reference = models.CharField(max_length=1024)
     abstract = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True, default=datetime.now)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
     #created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
     def get_choices(cls):
-        references = [ 
-          (reference.id, 
+        references = [
+          (reference.id,
           reference.full_reference[:130] + '..' \
             if len(reference.full_reference) > 132 else \
-            reference.full_reference) 
+            reference.full_reference)
           for reference in cls.objects.all().order_by('full_reference') ]
         references.insert(0, (-1, 'New...'))
         return references
@@ -204,15 +204,15 @@ class Location(models.Model):
     latitude = models.FloatField(blank=True, null=True)
     longitude = models.FloatField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, null=True, default=datetime.now)
-    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
     @classmethod
     def get_choices(cls):
-        sites = [ 
-          (location.id, 
+        sites = [
+          (location.id,
           location.site_name[:130] + '..' \
             if len(location.site_name) > 132 else \
-            location.site_name) 
+            location.site_name)
           for location in cls.objects.all().order_by('site_name') ]
         sites.insert(0, (-1, 'New...'))
         return sites
