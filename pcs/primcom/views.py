@@ -8,7 +8,7 @@ from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
 
 from .models import TraitData, PublicTraitData, Trait, Taxonomy, Location, Reference, PublicVersion
-# from .forms import TraitDataForm, QueryDataForm
+from .forms import TraitDataForm, QueryDataForm
 
 
 def _get_auto_fields(form):
@@ -38,11 +38,11 @@ def _lookup_location(location_id):
 
 def home(request):
     ''' Handle requests for the "home" page.'''
-    return render(request, 'index.html', {'home_active': True})
+    return render(request, 'primcom/index.html', {'home_active': True})
 
 def info(request):
     ''' Handle requests for the "info" page.'''
-    return render(request, 'info.html', {'info_active': True})
+    return render(request, 'primcom/info.html', {'info_active': True})
 
 def collaborators(request):
     ''' Handle requests for the "collaborators" page.'''
@@ -85,7 +85,7 @@ def collaborators(request):
         },
       ]
     }
-    return render(request, 'collaborators.html', context)
+    return render(request, 'primcom/collaborators.html', context)
 
 def csv_data(request):
     '''Handle requests for CSV-export from the "query" page.'''
@@ -154,11 +154,11 @@ def query(request):
     context['query_active'] = True
     context['traits_by_category'] = Trait.get_all_by_category()
     return render_to_response(
-      'query.html', context, context_instance=RequestContext(request))
+      'primcom/query.html', context, context_instance=RequestContext(request))
 
 def methods(request):
     ''' Handle requests for the "methods" page.'''
-    return render(request, 'methods.html', {'methods_active': True})
+    return render(request, 'primcom/methods.html', {'methods_active': True})
 
 def archive(request):
     ''' Handle requests for the "archive" page.'''
@@ -169,11 +169,11 @@ def archive(request):
     ]
     context['archive_active'] = True
     return render_to_response(
-      'archive.html', context, context_instance=RequestContext(request))
+      'primcom/archive.html', context, context_instance=RequestContext(request))
 
 def contact(request):
     ''' Handle requests for the "contact" page.'''
-    return render(request, 'contact.html', {'contact_active': True})
+    return render(request, 'primcom/contact.html', {'contact_active': True})
 
 def add(request):
     '''Handle requests for the "add" page for a TraitData object.'''
@@ -267,4 +267,4 @@ def add(request):
     # The initial "add" page
     context['auto_fields'] = _get_auto_fields(context['form'])
     context['add_active'] = True
-    return render_to_response('traitdata_form.html', context, context_instance=RequestContext(request))
+    return render_to_response('primcom/traitdata_form.html', context, context_instance=RequestContext(request))

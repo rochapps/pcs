@@ -1,0 +1,25 @@
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/pcs">PCS</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li{% if info_active %} class="active"{% endif %}><a title="Project Information" href="/pcs/info">Project Information</a></li>
+        <li{% if collaborators_active %} class="active"{% endif %}><a title="Collaborators" href="/pcs/collaborators">Collaborators</a></li>
+        <li{% if query_active %} class="active"{% endif %}><a title="Query Data" href="/pcs/query">Query Data</a></li>
+        <li{% if methods_active %} class="active"{% endif %}><a title="Methods & Metadata" href="/pcs/methods">Methods & Metadata</a></li>
+        <li{% if archive_active %} class="active"{% endif %}><a title="Archive" href="/pcs/archive">Archive</a></li>
+        <li{% if contact_active %} class="active"{% endif %}><a title="Contact Us" href="/pcs/contact">Contact</a></li>
+        <!--<li{% if add_active %} class="active"{% endif %}><a title="Add Data" href="/pcs/add">Add Data</a></li>-->
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
