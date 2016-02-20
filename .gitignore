@@ -15,5 +15,3 @@ conf/pillar/*/deploy
 *.priv
 .env
 node_modules
-*/static/js/bundle.js
-*/static/css

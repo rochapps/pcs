@@ -1,0 +1,166 @@
+/* Utility classes */
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+p {
+  text-align: left;
+}
+/*div {*/
+/*border: 1px solid black;*/
+/*}*/
+/* Theme classes */
+body {
+  margin: 0 0 0 0;
+  padding: 0;
+  color: black;
+  background-color: white;
+  line-height: 130%;
+  font-family: arial, helvetica, verdana, tahoma, sans-serif;
+  text-align: center;
+}
+h2 {
+  color: #666;
+  border-bottom: 1px solid #a0c80e;
+  font-size: 150%;
+  letter-spacing: -1px;
+}
+h3 {
+  color: #666;
+  border-bottom: 1px solid #a0c80e;
+  font-size: 130%;
+  letter-spacing: -1px;
+}
+/* Header styling */
+#wrapper-header {
+  background: #222;
+}
+#header {
+  background: #000 url('/static/img/header.jpg') right no-repeat;
+  width: 95%;
+  height: 125px;
+  line-height: 125px;
+  margin: 0 auto;
+  border-left: 1px solid #707070;
+  border-right: 1px solid #707070;
+  text-align: left;
+}
+#header h1 {
+  margin: 0;
+  padding: 0;
+  color: #eee;
+  font-size: 220%;
+  padding-left: 10px;
+  letter-spacing: -1px;
+}
+/*#content {*/
+/*width: 95%;*/
+/*margin: 0 0 0 0 auto;*/
+/*padding: 4px 4px 4px 4px;*/
+/*border-left: 1px solid #bbb;*/
+/*border-right: 1px solid #bbb;*/
+/*background: white;*/
+/*font-size: 90%;*/
+/*text-align: left;*/
+/*}*/
+/* Query Data */
+#id_species_selection,
+#id_trait_selection {
+  text-align: left;
+}
+/* General formatting */
+.fieldWrapper {
+  float: left;
+  text-align: left;
+  margin: 0px;
+  padding: 0px;
+  margin-right: 20px;
+}
+.trait {
+  height: 24px;
+  float: left;
+}
+.trait_box {
+  padding-left: 5px;
+  height: 24px;
+  float: left;
+  text-align: center;
+}
+.trait_name {
+  width: 250px;
+}
+.trait_min {
+  width: 50px;
+}
+.trait_max {
+  width: 50px;
+}
+.trait_mean {
+  width: 50px;
+}
+.trait_median {
+  width: 50px;
+}
+.trait_stddev {
+  width: 50px;
+}
+.trait_samplesize {
+  width: 100px;
+}
+.trait_sampletype {
+  width: 100px;
+}
+.trait_basis {
+  width: 100px;
+}
+.trait_sex {
+  width: 100px;
+}
+.trait_duration {
+  width: 150px;
+}
+.trait_wild {
+  width: 60px;
+}
+.trait_notes {
+  width: 200px;
+}
+.trait_container {
+  border-top: solid lightgray 1px;
+}
+.help_text {
+  color: gray;
+  font-size: 9px;
+  margin-left: 10px;
+}
+.wrapper {
+  width: 1200px;
+}
+.label {
+  font-weight: bold;
+}
+/* Messaging */
+.message {
+  border: 1px solid #6a8b5f;
+  background: #BEE880;
+  font-weight: bold;
+  font-size: 10px;
+  padding: 4px 5px 0px 20px;
+  font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+}
+/* Errors */
+ul.errorlist {
+  margin: 0;
+  padding: 0;
+}
+.errorlist li {
+  color: white;
+  background-color: red;
+  display: block;
+  font-size: 10px;
+  margin: 0 0 0px;
+  padding: 4px 5px 0px 20px;
+}
+.field_error {
+  border: 1px solid red;
+}
