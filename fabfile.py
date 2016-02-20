@@ -36,7 +36,7 @@ def staging():
 @task
 def production():
     env.environment = 'production'
-    env.master = 'CHANGEME'
+    env.master = '52.25.166.228'
     initialize_env()
 
 
