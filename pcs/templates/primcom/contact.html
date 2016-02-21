@@ -1,8 +1,13 @@
 {% extends "base.html" %}
+{% load scribbler_tags %}
 
 {% block title %} - Contact{% endblock %}
 
 {% block content %}
-<h1>Contact</h1>
+<h1>{% scribble 'contact_title' %}Contact{% endscribble %}</h1>
+
+{% scribble 'contact_content' %}
 Praesent tortor dolor, dignissim vitae risus sed, suscipit mollis justo. Ut pulvinar, enim et laoreet venenatis, justo tellus viverra orci, et pretium ante odio in eros. Mauris porttitor ante varius quam lacinia sodales in eu lectus. Praesent non enim ac dolor viverra aliquet. Suspendisse sodales non ligula in semper. Mauris dignissim elementum imperdiet. Interdum et malesuada fames ac ante ipsum primis in faucibus. Fusce sagittis congue iaculis. Nunc viverra, magna quis dictum interdum, risus augue semper eros, in aliquet neque velit in magna. Sed sem erat, congue nec massa sit amet, suscipit vulputate ligula.
+{% endscribble %}
+
 {% endblock %}

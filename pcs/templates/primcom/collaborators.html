@@ -1,25 +1,74 @@
 {% extends "base.html" %}
+{% load scribbler_tags %}
 
 {% block title %} - Collaborators{% endblock %}
 
 {% block content %}
-<h1>Collaborators</h1>
-{% for section in sections %}
-<div class="row row-eq-height"><h2>{{ section.title }}</h2>
-{% for member in section.members %}
+<h1>{% scribble 'collaborators_title' %}Collaborators{% endscribble %}</h1>
+
+<div class="row row-eq-height"><h2>{% scribble 'collaborators_organizers' %}Project Organizers{% endscribble %}</h2>
+
     <div class="col-md-6">
+        {% scribble 'collaborators_charles' %}
         <div class="row">
             <div class="col-md-2">
-                <img width=80px src="{{ member.picture }}" class="collab-photo img-rounded"/>
+                <img width="80px" src="http://10ktrees.nunn-lab.org/pics/pictureCharlie.jpg" class="collab-photo img-rounded">
             </div>
             <div class="col-md-10">
-                <div class="collab-name text-left">{% if member.link %}<a href="{{ member.link }}">{% endif %}<strong>{{ member.name }}</strong>{% if member.link %}</a>{% endif %}</div>
-                <div class="collab-desc text-left">{{ member.description }}</div>
+                <div class="collab-name text-left"><a href="http://charlesnunn.com"><strong>Charles Nunn</strong></a></div>
+                <div class="collab-desc text-left">Department of Evolutionary Anthropology, Duke University; Duke Global Health Institute; Triangle Center for Evolutionary Medicine (TriCEM)</div>
             </div>
         </div>
+        {% endscribble %}
     </div>
-{% endfor %}
+
+    <div class="col-md-6">
+        {% scribble 'collaborators_joel' %}
+        <div class="row">
+            <div class="col-md-2">
+                <img width="80px" src="/static/img/joel_bray.png" class="collab-photo img-rounded">
+            </div>
+            <div class="col-md-10">
+                <div class="collab-name text-left"><a href="https://joelbray.wordpress.com/"><strong>Joel Bray</strong></a></div>
+                <div class="collab-desc text-left">School of Human Evolution and Social Change, Arizona State University</div>
+            </div>
+        </div>
+        {% endscribble %}
+    </div>
+
 </div>
 <!--<div class="clearfix"/>-->
-{% endfor %}
+
+<div class="row row-eq-height"><h2>{% scribble 'collaborators_contributors' %}Project Contributors{% endscribble %}</h2>
+
+    <div class="col-md-6">
+        {% scribble 'collaborators_alex' %}
+        <div class="row">
+            <div class="col-md-2">
+                <img width="80px" src="/static/img/alexander_vining.png" class="collab-photo img-rounded">
+            </div>
+            <div class="col-md-10">
+                <div class="collab-name text-left"><a href="http://people.duke.edu/~av127/"><strong>Alexander Vining</strong></a></div>
+                <div class="collab-desc text-left">Department of Evolutionary Anthropology, Duke University</div>
+            </div>
+        </div>
+        {% endscribble %}
+    </div>
+
+    <div class="col-md-6">
+        {% scribble 'collaborators_carolina' %}
+        <div class="row">
+            <div class="col-md-2">
+                <img width="80px" src="/static/img/caroline_amoroso.png" class="collab-photo img-rounded">
+            </div>
+            <div class="col-md-10">
+                <div class="collab-name text-left"><a href="http://carolineamoroso.weebly.com/"><strong>Caroline Amoroso</strong></a></div>
+                <div class="collab-desc text-left">Department of Evolutionary Anthropology, Duke University</div>
+            </div>
+        </div>
+        {% endscribble %}
+    </div>
+
+</div>
+<!--<div class="clearfix"/>-->
 {% endblock %}

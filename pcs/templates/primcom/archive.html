@@ -1,8 +1,13 @@
 {% extends "base.html" %}
+{% load scribbler_tags %}
 
 {% block title %} - Archive{% endblock %}
 
 {% block content %}
-<h1>Archive</h1>
+<h1>{% scribble 'archive_title' %}Archive{% endscribble %}</h1>
+
+{% scribble 'archive_content' %}
 Integer semper, tortor quis volutpat maximus, mauris turpis tincidunt elit, quis ullamcorper leo nulla sit amet nulla. Donec vitae justo ac lorem convallis aliquam ac ac leo. Sed dignissim neque sit amet tortor pulvinar, quis tincidunt sapien dignissim. Mauris id eros orci. Vestibulum ut mauris eu tortor gravida imperdiet. Donec faucibus suscipit massa, ut dapibus turpis venenatis et. Mauris purus sapien, viverra bibendum erat vitae, hendrerit rhoncus mi. Morbi hendrerit convallis eros quis eleifend.
+{% endscribble %}
+
 {% endblock %}

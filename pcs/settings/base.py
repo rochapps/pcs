@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'django.contrib.sitemaps',
     'pcs.primcom',
+    'scribbler',
 ]
 
 MIDDLEWARE_CLASSES = [

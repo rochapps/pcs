@@ -1,12 +1,15 @@
 {% extends "base.html" %}
+{% load scribbler_tags %}
 
 {% block title %} - Query Data{% endblock %}
 
 {% block content %}
-<h1>Query Data</h1>
+<h1>{% scribble 'query_title' %}Query Data{% endscribble %}</h1>
 
+{% scribble 'query_how' %}
 <h2>How to Use</h2>
 <p>Ma quande lingues coalesce, li grammatica del resultant lingue es plu simplic e regulari quam ti del coalescent lingues. Li nov lingua franca va esser plu simplic e regulari quam li existent Europan lingues. It va esser tam simplic quam Occidental: in fact, it va esser Occidental. A un Angleso it va semblar un simplificat Angles, quam un skeptic Cambridge amico dit me que Occidental es.</p>
+{% endscribble %}
 
 <form id="id_query_form" method="POST" role="form" action="csv">{% csrf_token %}
 

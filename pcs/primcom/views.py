@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from django.shortcuts import render, render_to_response, redirect
 from django.template import RequestContext
+from django.views.generic import TemplateView
 
 from .models import TraitData, PublicTraitData, Trait, Taxonomy, Location, Reference, PublicVersion
 from .forms import TraitDataForm, QueryDataForm
@@ -44,48 +45,10 @@ def info(request):
     ''' Handle requests for the "info" page.'''
     return render(request, 'primcom/info.html', {'info_active': True})
 
-def collaborators(request):
-    ''' Handle requests for the "collaborators" page.'''
-    context = {
-      'collaborators_active': True,
-      'sections': [
-        {
-          'title': 'Project Organizers',
-          'members': [
-             {
-               'name': 'Charles Nunn',
-               'picture': 'http://10ktrees.nunn-lab.org/pics/pictureCharlie.jpg',
-               'link': 'http://charlesnunn.com',
-               'description': 'Department of Evolutionary Anthropology, Duke University; Duke Global Health Institute; Triangle Center for Evolutionary Medicine (TriCEM)',
-            },
-            {
-              'name': 'Joel Bray',
-              'picture': '/static/img/joel_bray.png',
-              'link': 'https://joelbray.wordpress.com/',
-              'description': 'School of Human Evolution and Social Change, Arizona State University',
-            }
-          ],
-        },
-        {
-          'title': 'Project Contributors',
-          'members': [
-            {
-              'name': 'Alexander Vining',
-              'picture': '/static/img/alexander_vining.png',
-              'link': 'http://people.duke.edu/~av127/',
-              'description': 'Department of Evolutionary Anthropology, Duke University',
-            },
-            {
-              'name': 'Caroline Amoroso',
-              'picture': '/static/img/caroline_amoroso.png',
-              'link': 'http://carolineamoroso.weebly.com/',
-              'description': 'Department of Evolutionary Anthropology, Duke University',
-            }
-          ],
-        },
-      ]
-    }
-    return render(request, 'primcom/collaborators.html', context)
+
+class Collaborators(TemplateView):
+    template_name = 'primcom/collaborators.html'
+
 
 def csv_data(request):
     '''Handle requests for CSV-export from the "query" page.'''

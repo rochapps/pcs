@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
   url(r'^$', views.home),
   url(r'^info$', views.info),
-  url(r'^collaborators$', views.collaborators),
+  url(r'^collaborators$', views.Collaborators.as_view()),
   url(r'^query$', views.query),
   url(r'^csv$', views.csv_data),
   url(r'^methods', views.methods),
