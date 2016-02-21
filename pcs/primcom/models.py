@@ -247,28 +247,29 @@ class Taxonomy(models.Model):
         return name_string
 
 
-#    @classmethod
-#    def get_choices(cls, tax_def=None, include_new=True):
-#        names = []
-#        import pprint
-#        for taxonomy in cls.objects.all().order_by(field_name,'species_reported_name'):
-#            tax_name = str()
-#            if tax_def:
-#                if tax_def == 'wr':
-#                    tax_name = taxonomy.binomial_wr05
-#                elif tax_def == 'ch':
-#                    tax_name = taxonomy.binomial_corbhill
-#                if tax_name == '' and taxonomy.species_reported_name:
-#                    print 'No name for {0}; using species_reported_name'.format(taxonomy.id)
-#                    tax_name = '[{0}]'.format(taxonomy.species_reported_name)
-#                else:
-#                    print 'No species_reported_name for {0}; using id'.format(taxonomy.id)
-#                    tax_name = '({0})'.format(taxonomy.id)
-#            if len(tax_name) > 132:
-#                tax_name = '{0}..'.format(tax_name[:130])
-#            names.append(tax_name)
-#        pprint.pprint(names)
-#        return names
+    @classmethod
+    def get_choices(cls, tax_def=None, include_new=True):
+        names = []
+        import pprint
+        # original line: for taxonomy in cls.objects.all().order_by(field_name,'species_reported_name'):  ## field_name is undefined
+        for taxonomy in cls.objects.all().order_by('species_reported_name'):
+            tax_name = str()
+            if tax_def:
+                if tax_def == 'wr':
+                    tax_name = taxonomy.binomial_wr05
+                elif tax_def == 'ch':
+                    tax_name = taxonomy.binomial_corbhill
+                if tax_name == '' and taxonomy.species_reported_name:
+                    print('No name for {0}; using species_reported_name').format(taxonomy.id)
+                    tax_name = '[{0}]'.format(taxonomy.species_reported_name)
+            else:
+                print('No species_reported_name for {0}; using id').format(taxonomy.id)
+                tax_name = '({0})'.format(taxonomy.id)
+                if len(tax_name) > 132:
+                    tax_name = '{0}..'.format(tax_name[:130])
+            names.append(tax_name)
+        pprint.pprint(names)
+        return names
 
     @classmethod
     def get_choices_raw(cls, include_new=True):
