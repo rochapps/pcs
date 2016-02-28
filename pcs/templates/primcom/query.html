@@ -119,6 +119,20 @@
         </div>
     </div>
 
+    <!-- Output Format-->
+    <div id="species_raw" class="container species_container">
+        <h2>Select Output Format</h2>
+        <div class="row form-group">
+            {% for choice_id, choice_label in form.output_format.field.choices %}
+            <div class="col-md-4">
+                <label id="id_output_format_{{ choice_id }}">
+                    <input type="checkbox" name="species_wr" value="{{ choice_id }}" checked> <span class="species_name">{{ choice_label }}</span>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="clear">&nbsp;</div>
 
     <div class="row form-group">

@@ -25,6 +25,7 @@
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <!-- Latest compiled and minified Bootstrap JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% if user.is_staff %}
         <script src="{% static 'scribbler/js/scribbler-min.js' %}"></script>
     {% endif %}

@@ -15,6 +15,7 @@ class PublicVersion(models.Model):
 
     @classmethod
     def get_latest_version(cls):
+        import pdb; pdb.set_trace()
         return PublicVersion.objects.get(pk=cls.objects.all().order_by('-created_at').values()[0]['id'])
 
 

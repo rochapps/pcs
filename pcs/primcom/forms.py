@@ -154,14 +154,17 @@ class TraitDataForm(forms.Form):
 
 
 class QueryDataForm(forms.Form):
-    traits = forms.MultipleChoiceField(
-      choices=Trait.get_choices(False))
-    #results = forms.MultipleChoiceField(
-    #  choices=(
-    #    (1, 'Raw data'),
-    #    (2, 'Summary data'),
-    #  ),
-    #  initial=2)
+    RAW = 1
+    AGGREGATED = 2
+    MEAN = 3
+
+    OUTPUT_FORMATS = [
+       (RAW, 'Raw data'),
+       (AGGREGATED, 'Aggregated data'),
+       (MEAN, 'Mean data'),
+    ]
+    traits = forms.MultipleChoiceField(choices=Trait.get_choices(False))
+    output_format = forms.MultipleChoiceField(choices=OUTPUT_FORMATS, initial=2)
     taxonomy = forms.ChoiceField(
       choices=(
         ('species_raw', 'Raw data'),
