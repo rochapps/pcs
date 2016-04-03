@@ -1,25 +1,35 @@
-from datetime import datetime
-
 from django.db import models
 
 
-class PublicVersion(models.Model):
-    version_major = models.SmallIntegerField()
-    version_minor = models.SmallIntegerField()
-    description = models.TextField(blank=True,null=True)
-    file_tag = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-      return "{0}.{1}".format(self.version_major, self.version_minor)
-
-    @classmethod
-    def get_latest_version(cls):
-        import pdb; pdb.set_trace()
-        return PublicVersion.objects.get(pk=cls.objects.all().order_by('-created_at').values()[0]['id'])
-
-
 class TraitData(models.Model):
+    MIN = 'min'
+    MAX = 'max'
+    MEAN = 'mean'
+    MEDIAN = 'median'
+    STDDEV = 'stddev'
+
+    BASIS_CHOICES = (
+        ('present', 'Present'),
+        ('converted', 'Converted'),
+        ('calculated', 'Calculated'),
+        ('inferred', 'Inferred'),
+    )
+    TRAIT_TYPES = (
+        (MIN, 'Minimum'),
+        (MAX, 'Maximum'),
+        (MEAN, 'Mean'),
+        (MEDIAN, 'Median'),
+        (STDDEV, 'S.D.'),
+    )
+    SAMPLE_TYPES = (
+        ('groups', 'Groups'),
+        ('individuals', 'Individuals'),
+        ('events', 'Events'),
+        ('na', 'NA'),
+    )
+    SEX_CHOICES = (
+        ('m', 'Male'),
+        ('f', 'Female'))
     who_entered = models.CharField(max_length=3)
     same_check = models.CharField(max_length=3, blank=True, null=True)
     taxonomy = models.ForeignKey('Taxonomy')
@@ -28,84 +38,17 @@ class TraitData(models.Model):
     trait = models.ForeignKey('Trait')
     study_duration = models.FloatField()
     is_wild = models.BooleanField(default=False)
-    TRAIT_TYPES = (
-        ('min', 'Minimum'),
-        ('max', 'Maximum'),
-        ('mean', 'Mean'),
-		('median', 'Median'),
-		('stddev', 'S.D.'),
-    )
     trait_type = models.CharField(max_length=10, choices=TRAIT_TYPES)
     trait_value = models.FloatField()
-    SEX_CHOICES = (
-        ('m', 'Male'),
-        ('f', 'Female'))
     sex = models.CharField(max_length=1, blank=True, null=True,
-      choices=SEX_CHOICES)
+                           choices=SEX_CHOICES)
     sample_size = models.SmallIntegerField()
-    SAMPLE_TYPES = (
-        ('groups', 'Groups'),
-        ('individuals', 'Individuals'),
-        ('events', 'Events'),
-        ('na', 'NA'),
-    )
     sample_type = models.CharField(max_length=20, null=True,
-      choices=SAMPLE_TYPES)
-    BASIS_CHOICES = (
-        ('present', 'Present'),
-        ('converted', 'Converted'),
-        ('calculated', 'Calculated'),
-        ('inferred', 'Inferred'),
-    )
+                                   choices=SAMPLE_TYPES)
     basis = models.CharField(max_length=20, null=True,
-      choices=BASIS_CHOICES)
+                             choices=BASIS_CHOICES)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-class PublicTraitData(models.Model):
-    who_entered = models.CharField(max_length=3)
-    same_check = models.CharField(max_length=3, blank=True, null=True)
-    taxonomy = models.ForeignKey('Taxonomy')
-    location = models.ForeignKey('Location')
-    reference = models.ForeignKey('Reference')
-    trait = models.ForeignKey('Trait')
-    study_duration = models.FloatField()
-    is_wild = models.BooleanField(default=False)
-    TRAIT_TYPES = (
-        ('min', 'Minimum'),
-        ('max', 'Maximum'),
-        ('mean', 'Mean'),
-		('median', 'Median'),
-		('stddev', 'S.D.'),
-    )
-    trait_type = models.CharField(max_length=10, choices=TRAIT_TYPES)
-    trait_value = models.FloatField()
-    SEX_CHOICES = (
-        ('m', 'Male'),
-        ('f', 'Female'))
-    sex = models.CharField(max_length=1, blank=True, null=True,
-      choices=SEX_CHOICES)
-    sample_size = models.SmallIntegerField()
-    SAMPLE_TYPES = (
-        ('groups', 'Groups'),
-        ('individuals', 'Individuals'),
-        ('events', 'Events'),
-        ('na', 'NA'),
-    )
-    sample_type = models.CharField(max_length=20, null=True,
-      choices=SAMPLE_TYPES)
-    BASIS_CHOICES = (
-        ('present', 'Present'),
-        ('converted', 'Converted'),
-        ('calculated', 'Calculated'),
-        ('inferred', 'Inferred'),
-    )
-    basis = models.CharField(max_length=20, null=True,
-      choices=BASIS_CHOICES)
-    notes = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    version = models.ForeignKey('PublicVersion', null=True)
 
     @classmethod
     def get_csv_headers(cls):
@@ -124,8 +67,11 @@ class PublicTraitData(models.Model):
             'trait_name',
             'study_duration',
             'is_wild',
-            'trait_type',
-            'trait_value',
+            'min',
+            'max',
+            'mean',
+            'median',
+            'stddev',
             'sample_size',
             'sample_type',
             'basis',
@@ -136,7 +82,7 @@ class PublicTraitData(models.Model):
     def get_csv_data(self, species_taxonomy=None):
         '''Return a sequence to be used as CSV data.'''
 
-        csv_values = (
+        initial_values = [
             self.taxonomy.species_name(species_taxonomy),
             self.taxonomy.species_reported_name,
             self.location.site_name,
@@ -149,27 +95,25 @@ class PublicTraitData(models.Model):
             self.trait.name,
             self.study_duration,
             self.is_wild,
-            self.trait_type,
-            self.trait_value,
+        ]
+        end_values = [
             self.sample_size,
             self.sample_type,
             self.basis,
             self.sex,
-            self.notes)
-        return [v for v in csv_values]
-
-    @classmethod
-    def promote_devel(cls):
-      """Promote the data in the "development" TraitData to the public site."""
-
-      # Delete all existing models
-      PublicTraitData.objects.all().delete()
-
-      # Create new objects from the data of the "development" objects
-      td_data = TraitData.objects.all().values()
-      for td in td_data:
-        ptd = PublicTraitData(**td)
-        ptd.save()
+            self.notes,
+        ]
+        if self.trait_type == self.MIN:
+            var_values = [self.trait_value, '', '', '', '']
+        elif self.trait_type == self.MAX:
+            var_values = ['', self.trait_value, '', '', '']
+        elif self.trait_type == self.MEAN:
+            var_values = ['', '', self.trait_value, '', '']
+        elif self.trait_type == self.MEDIAN:
+            var_values = ['', '', '', self.trait_value, '']
+        elif self.trait_type == self.STDDEV:
+            var_values = ['', '', '', '', self.trait_value]
+        return initial_values + var_values + end_values
 
 
 class Reference(models.Model):
@@ -178,22 +122,19 @@ class Reference(models.Model):
     abstract = models.TextField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    #created_at = models.DateTimeField(auto_now_add=True)
+
+    # created_at = models.DateTimeField(auto_now_add=True)
 
     @classmethod
     def get_choices(cls):
         references = [
-          (reference.id,
-          reference.full_reference[:130] + '..' \
-            if len(reference.full_reference) > 132 else \
-            reference.full_reference)
-          for reference in cls.objects.all().order_by('full_reference') ]
+            (reference.id,
+             reference.full_reference[:130] + '..' \
+                 if len(reference.full_reference) > 132 else \
+                 reference.full_reference)
+            for reference in cls.objects.all().order_by('full_reference')]
         references.insert(0, (-1, 'New...'))
         return references
-
-
-#class PublicReference(Reference):
-#    version = models.ForeignKey('PublicVersion')
 
 
 class Location(models.Model):
@@ -210,17 +151,13 @@ class Location(models.Model):
     @classmethod
     def get_choices(cls):
         sites = [
-          (location.id,
-          location.site_name[:130] + '..' \
-            if len(location.site_name) > 132 else \
-            location.site_name)
-          for location in cls.objects.all().order_by('site_name') ]
+            (location.id,
+             location.site_name[:130] + '..' \
+                 if len(location.site_name) > 132 else \
+                 location.site_name)
+            for location in cls.objects.all().order_by('site_name')]
         sites.insert(0, (-1, 'New...'))
         return sites
-
-
-#class PublicLocation(Location):
-#    version = models.ForeignKey('PublicVersion')
 
 
 class Taxonomy(models.Model):
@@ -247,6 +184,8 @@ class Taxonomy(models.Model):
                 name_string = "({0})".format(self.species_reported_name)
         return name_string
 
+    def __str__(self):
+        return self.species_reported_name
 
     @classmethod
     def get_choices(cls, tax_def=None, include_new=True):
@@ -307,29 +246,28 @@ class Taxonomy(models.Model):
         return names
 
 
-#class PublicTaxonomy(Taxonomy):
-#    version = models.ForeignKey('PublicVersion')
-
-
 class Trait(models.Model):
     code = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
     category = models.SmallIntegerField(default=1)
 
     CATEGORY_MAP = {
-      1: 'Life History',
-      2: 'Dispersal',
-      3: 'Morphology',
-      4: 'Demography',
-      5: 'Diet',
-      6: 'Ranging & Activity',
-      7: 'Agonism',
-      8: 'Predation'
+        1: 'Life History',
+        2: 'Dispersal',
+        3: 'Morphology',
+        4: 'Demography',
+        5: 'Diet',
+        6: 'Ranging & Activity',
+        7: 'Agonism',
+        8: 'Predation'
     }
+
+    def __str__(self):
+        return self.name
 
     @classmethod
     def get_choices(cls, include_new=True):
-        traits = [ (trait.id, trait.code) for trait in cls.objects.all().order_by('category') ]
+        traits = [(trait.id, trait.code) for trait in cls.objects.all().order_by('category')]
         if include_new:
             traits.insert(0, (-1, 'New...'))
         return traits
@@ -344,17 +282,13 @@ class Trait(models.Model):
             structure[k]['name'] = cls.CATEGORY_MAP[k]
             structure[k]['traits'] = list()
 
-        for t in cls.objects.all().order_by('category','name'):
-            structure[t.category]['traits'].append((t.id,t.name))
+        for t in cls.objects.all().order_by('category', 'name'):
+            structure[t.category]['traits'].append((t.id, t.name))
 
         import pprint
         pprint.pprint(structure)
 
         trait_categories = list()
         for k in structure.keys():
-            trait_categories.append((k,structure[k]['name'],structure[k]['traits']))
+            trait_categories.append((k, structure[k]['name'], structure[k]['traits']))
         return trait_categories
-
-
-#class PublicTrait(Trait):
-#    version = models.ForeignKey('PublicVersion')
