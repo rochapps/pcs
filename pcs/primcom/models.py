@@ -55,28 +55,29 @@ class TraitData(models.Model):
         '''Return a sequence to be used as CSV header fields.'''
 
         csv_headers = (
-            'species_name',
-            'species_reported_name',
-            'site_name',
-            'park_reserve_name',
-            'nation',
-            'latitude',
-            'longitude',
-            'citation',
-            'full_reference',
-            'trait_name',
+            'Species Name',
+            'Species Reported Name',
+            'Site Name',
+            # 'park_reserve_name',
+            # 'nation',
+            # 'latitude',
+            # 'longitude',
+            'Citation',
+            # 'full_reference',
+            'Trait Name',
             'study_duration',
-            'is_wild',
-            'min',
-            'max',
-            'mean',
-            'median',
-            'stddev',
-            'sample_size',
-            'sample_type',
-            'basis',
-            'sex',
-            'notes')
+            'Wild',
+            'Min',
+            'Max',
+            'Mean',
+            'Median',
+            'Stddev',
+            'Sample Size',
+            'Sample Type',
+            'Basis',
+            'Sex',
+            'notes'
+        )
         return csv_headers
 
     def get_csv_data(self, species_taxonomy=None):
@@ -86,12 +87,12 @@ class TraitData(models.Model):
             self.taxonomy.species_name(species_taxonomy),
             self.taxonomy.species_reported_name,
             self.location.site_name,
-            self.location.park_reserve_name.encode('utf-8'),
-            self.location.nation,
-            self.location.latitude,
-            self.location.longitude,
-            self.reference.citation.encode('utf-8'),
-            self.reference.full_reference.encode('utf-8'),
+            # self.location.park_reserve_name,
+            # self.location.nation,
+            # self.location.latitude,
+            # self.location.longitude,
+            self.reference.citation,
+            # self.reference.full_reference,
             self.trait.name,
             self.study_duration,
             self.is_wild,
@@ -136,6 +137,9 @@ class Reference(models.Model):
         references.insert(0, (-1, 'New...'))
         return references
 
+    class Meta:
+        ordering = ('citation',)
+
 
 class Location(models.Model):
     who_entered = models.CharField(max_length=3)
@@ -158,6 +162,9 @@ class Location(models.Model):
             for location in cls.objects.all().order_by('site_name')]
         sites.insert(0, (-1, 'New...'))
         return sites
+
+    class Meta:
+        ordering = ('site_name',)
 
 
 class Taxonomy(models.Model):

@@ -1,8 +1,13 @@
 import codecs
 import datetime
+import os
 import pprint
+import shutil
+from time import time
 
-from django.http import HttpResponse
+from django.conf import settings
+from django.core.servers.basehttp import FileWrapper
+from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -10,7 +15,7 @@ from django.views.decorators.http import require_POST
 
 from .models import TraitData, Trait, Taxonomy, Location, Reference
 from .forms import QueryDataForm
-from .utils import write_raw_data_file, write_mean_data_file
+from .utils import write_raw_data_file, write_mean_data_file, write_location_data_file, write_location_references_file
 
 
 def _get_auto_fields(form):
@@ -97,12 +102,33 @@ def csv_data(request):
     response['Content-Disposition'] = 'attachment; ' \
                                       'filename={0}'.format(response_filename)
     traits = Trait.objects.in_bulk(traits)
+    locations = Location.objects.all()
+    references = Reference.objects.all()
     qs = TraitData.objects.all().filter(trait__in=traits).filter(taxonomy__pk__in=species
           ).order_by('taxonomy__species_reported_name', 'trait__name', 'sex').select_related('trait', 'taxonomy')
     # Add the Excel BOM for UTF-8 encoding
     response.write(codecs.BOM_UTF8)
-    # write_mean_data_file(response, qs, traits, taxonomy)
-    write_raw_data_file(response, qs, traits, taxonomy)
+    # make a directory for current download
+    now = str(time()).replace('.', '')
+    tempdir = os.path.join(settings.MEDIA_ROOT, 'downloads', now)
+    os.mkdir(tempdir)
+    # create files to be downloaded
+    write_mean_data_file(os.path.join(tempdir, 'mean_values.csv'), qs, traits, taxonomy)
+    write_raw_data_file(os.path.join(tempdir, 'raw_data.csv'), qs, traits, taxonomy)
+    write_location_data_file(os.path.join(tempdir, 'locations.csv'), locations)
+    write_location_references_file(os.path.join(tempdir, 'references.csv'), references)
+    # zip all files we created
+    zip_file_name = shutil.make_archive(os.path.join(settings.MEDIA_ROOT, 'downloads', "pcs_{0}".format(now)), 'zip', tempdir)
+    # remove created files
+    shutil.rmtree(tempdir)
+    # open zipfile
+    zip_file = open(os.path.join(tempdir, zip_file_name), 'rb')
+    # transmit zipfile in 8KB chunks
+    wrapper = FileWrapper(zip_file)
+    response = StreamingHttpResponse(wrapper, content_type='application/zip')
+    response['Content-Length'] = zip_file.tell()
+    response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(zip_file_name)
+    zip_file.seek(0)
     return response
 
 

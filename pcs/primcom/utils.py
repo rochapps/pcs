@@ -36,62 +36,94 @@ class Aggregator(object):
     def reset(self):
         self.items = {}
 
-    def get_avg(self, key, trait_type, sex):
+    def get_avg(self, key, trait_type):
         avg = Average()
         for item in self.items.get(key, []):
-            if item.trait_type == trait_type and item.sex == sex:
+            if item.trait_type == trait_type:
                 avg.push(item.trait_value)
-        return avg.get_avg()
+        return avg.get_avg() or 'NA'
 
-    def get_row(self, sex):
+    def get_row(self):
         item = self.item
         row = [
             item.taxonomy.species_name(self.taxonomy),
-            item.taxonomy.species_reported_name,
-            sex or 'unknown',
         ]
         for trait_id, trait in self.traits.items():
             for op in self.ops:
-                avg = self.get_avg(trait_id, op, sex)
+                avg = self.get_avg(trait_id, op)
                 row.append(avg)
         return row
 
 
-def write_raw_data_file(response, qs, traits, taxonomy):
-    writer = csv.writer(response)
-    writer.writerow(TraitData.get_csv_headers())
-    for record in qs:
-        writer.writerow(record.get_csv_data(species_taxonomy=taxonomy))
+def write_raw_data_file(file_name, qs, traits, taxonomy):
+    with open(file_name, 'w+') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(TraitData.get_csv_headers())
+        for record in qs:
+            writer.writerow(record.get_csv_data(species_taxonomy=taxonomy))
 
 
-def write_mean_data_file(response, qs, traits, taxonomy):
-    writer = csv.writer(response)
-    ops = [TraitData.MEAN]
-    headers = [
-        'species_name',
-        'species_reported_name',
-        'sex',
-    ]
-    for key, trait in traits.items():
-        for op in ops:
-            headers.append("{0} ({1})".format(trait.name, op))
-    writer.writerow(headers)
-    aggregator = Aggregator(taxonomy=taxonomy, traits=traits, ops=ops)
-    first_record = qs[0]
-    species_reported_name = first_record.taxonomy.species_reported_name
-    for record in qs:
-        if record.taxonomy.species_reported_name == species_reported_name:
-            aggregator.push(record.trait.id, record)
-        else:
-            if aggregator.items:
-                # species name or trait has changed but we have records ready to be written
-                male_row = aggregator.get_row('m')
-                female_row = aggregator.get_row('f')
-                none_row = aggregator.get_row('')
-                writer.writerow(male_row)
-                writer.writerow(female_row)
-                writer.writerow(none_row)
-                # reset aggregator so that the new specie can be added
-                aggregator.reset()
-            species_reported_name = record.taxonomy.species_reported_name
-            aggregator.push(record.trait.id, record)
+def write_mean_data_file(file_name, qs, traits, taxonomy):
+    with open(file_name, 'w+') as csvfile:
+        writer = csv.writer(csvfile)
+        ops = [TraitData.MEAN]
+        headers = [
+            'Species Name',
+        ]
+        for key, trait in traits.items():
+            for op in ops:
+                headers.append("{0} ({1})".format(trait.name, op))
+        writer.writerow(headers)
+        aggregator = Aggregator(taxonomy=taxonomy, traits=traits, ops=ops)
+        first_record = qs[0]
+        species_corrected_name = first_record.taxonomy.species_name(taxonomy)
+        for record in qs:
+            if record.taxonomy.species_name(taxonomy) == species_corrected_name:
+                aggregator.push(record.trait.id, record)
+            else:
+                if aggregator.items:
+                    row = aggregator.get_row()
+                    writer.writerow(row)
+                    aggregator.reset()
+                species_corrected_name = record.taxonomy.species_name(taxonomy)
+                aggregator.push(record.trait.id, record)
+
+
+def write_location_data_file(file_name, qs):
+    with open(file_name, 'w+') as csvfile:
+        writer = csv.writer(csvfile)
+        headers = [
+            'Site Name',
+            'Park Reserve Name',
+            'Nation',
+            'Latitude',
+            'Longitude',
+            'Notes'
+        ]
+        writer.writerow(headers)
+        for location in qs:
+            writer.writerow([
+                location.site_name,
+                location.park_reserve_name,
+                location.nation,
+                location.latitude,
+                location.longitude,
+                location.notes
+            ])
+
+
+def write_location_references_file(file_name, qs):
+    with open(file_name, 'w+') as csvfile:
+        writer = csv.writer(csvfile)
+        headers = [
+            'Citation',
+            'Full Reference',
+            'Notes',
+        ]
+        writer.writerow(headers)
+        for reference in qs:
+            writer.writerow([
+                reference.citation,
+                reference.full_reference,
+                reference.notes,
+            ])
