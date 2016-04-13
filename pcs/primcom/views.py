@@ -61,6 +61,8 @@ class Collaborators(TemplateView):
     template_name = 'primcom/collaborators.html'
 
 
+from django.shortcuts import redirect
+
 @require_POST
 def csv_data(request):
     '''Handle requests for CSV-export from the "query" page.'''
@@ -95,19 +97,11 @@ def csv_data(request):
 
     for q in request.POST:
         print("{0} == {1}".format(q, request.POST.getlist(q)))
-
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='text/csv')
-    response_filename = 'pcs_results-{0}.csv'.format(datetime.datetime.now().strftime("%Y%m%d%H%M%S"))
-    response['Content-Disposition'] = 'attachment; ' \
-                                      'filename={0}'.format(response_filename)
     traits = Trait.objects.in_bulk(traits)
     locations = Location.objects.all()
     references = Reference.objects.all()
     qs = TraitData.objects.all().filter(trait__in=traits).filter(taxonomy__pk__in=species
           ).order_by('taxonomy__species_reported_name', 'trait__name', 'sex').select_related('trait', 'taxonomy')
-    # Add the Excel BOM for UTF-8 encoding
-    response.write(codecs.BOM_UTF8)
     # make a directory for current download
     now = str(time()).replace('.', '')
     tempdir = os.path.join(settings.MEDIA_ROOT, 'downloads', now)
@@ -119,17 +113,8 @@ def csv_data(request):
     write_location_references_file(os.path.join(tempdir, 'references.csv'), references)
     # zip all files we created
     zip_file_name = shutil.make_archive(os.path.join(settings.MEDIA_ROOT, 'downloads', "pcs_{0}".format(now)), 'zip', tempdir)
-    # remove created files
     shutil.rmtree(tempdir)
-    # open zipfile
-    zip_file = open(os.path.join(tempdir, zip_file_name), 'rb')
-    # transmit zipfile in 8KB chunks
-    wrapper = FileWrapper(zip_file)
-    response = StreamingHttpResponse(wrapper, content_type='application/zip')
-    response['Content-Length'] = zip_file.tell()
-    response['Content-Disposition'] = 'attachment; filename="%s"' % os.path.basename(zip_file_name)
-    zip_file.seek(0)
-    return response
+    return redirect(zip_file_name.replace(settings.MEDIA_ROOT, settings.MEDIA_URL))
 
 
 def query(request):
