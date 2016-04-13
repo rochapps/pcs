@@ -5,18 +5,9 @@ from .models import Trait, Taxonomy
 
 
 class QueryDataForm(forms.Form):
-    RAW = 1
-    AGGREGATED = 2
-    MEAN = 3
     SPECIES_RAW = 'species_raw'
     SPECIES_CH = 'species_ch'
     SPECIES_WR = 'species_wr'
-
-    OUTPUT_FORMATS = [
-        (RAW, 'Raw data'),
-        (AGGREGATED, 'Aggregated data'),
-        (MEAN, 'Mean data'),
-    ]
     TAXONOMY_OPTIONS = [
         (SPECIES_RAW, 'Raw data'),
         (SPECIES_CH, 'Corbett & Hill'),
@@ -24,7 +15,6 @@ class QueryDataForm(forms.Form):
     ]
 
     traits = forms.MultipleChoiceField(choices=Trait.get_choices(False))
-    output_format = forms.MultipleChoiceField(choices=OUTPUT_FORMATS, initial=2)
     taxonomy = forms.ChoiceField(
       choices=TAXONOMY_OPTIONS,
       widget=forms.RadioSelect(attrs={'class': 'Radio'}),

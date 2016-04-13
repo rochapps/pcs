@@ -1,13 +1,9 @@
-import codecs
-import datetime
 import os
 import pprint
 import shutil
 from time import time
 
 from django.conf import settings
-from django.core.servers.basehttp import FileWrapper
-from django.http import HttpResponse, StreamingHttpResponse
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -74,10 +70,6 @@ def csv_data(request):
     else:
         print("Form is NOT valid!")
         print(form.errors)
-
-    # Handle form processing
-    # form = QueryDataForm(request.POST)
-
     # The 'taxonomy' field determines Trait names
     taxonomy_choice = request.POST.get('taxonomy', None)
     if taxonomy_choice == 'species_raw':
@@ -89,14 +81,7 @@ def csv_data(request):
     else:
         taxonomy = 'raw'
     species = request.POST.getlist(taxonomy_choice)
-    print("Species:")
-    pprint.pprint(species)
     traits = request.POST.getlist('traits')
-    print("Traits:")
-    pprint.pprint(traits)
-
-    for q in request.POST:
-        print("{0} == {1}".format(q, request.POST.getlist(q)))
     traits = Trait.objects.in_bulk(traits)
     locations = Location.objects.all()
     references = Reference.objects.all()

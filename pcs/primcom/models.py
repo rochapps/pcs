@@ -197,7 +197,6 @@ class Taxonomy(models.Model):
     @classmethod
     def get_choices(cls, tax_def=None, include_new=True):
         names = []
-        import pprint
         # original line: for taxonomy in cls.objects.all().order_by(field_name,'species_reported_name'):  ## field_name is undefined
         for taxonomy in cls.objects.all().order_by('species_reported_name'):
             tax_name = str()
@@ -215,7 +214,6 @@ class Taxonomy(models.Model):
                 if len(tax_name) > 132:
                     tax_name = '{0}..'.format(tax_name[:130])
             names.append(tax_name)
-        pprint.pprint(names)
         return names
 
     @classmethod
@@ -288,13 +286,8 @@ class Trait(models.Model):
             structure[k] = dict()
             structure[k]['name'] = cls.CATEGORY_MAP[k]
             structure[k]['traits'] = list()
-
         for t in cls.objects.all().order_by('category', 'name'):
             structure[t.category]['traits'].append((t.id, t.name))
-
-        import pprint
-        pprint.pprint(structure)
-
         trait_categories = list()
         for k in structure.keys():
             trait_categories.append((k, structure[k]['name'], structure[k]['traits']))
