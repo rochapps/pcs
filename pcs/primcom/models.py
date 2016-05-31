@@ -209,11 +209,22 @@ class Taxonomy(models.Model):
                     print('No name for {0}; using species_reported_name').format(taxonomy.id)
                     tax_name = '[{0}]'.format(taxonomy.species_reported_name)
             else:
-                print('No species_reported_name for {0}; using id').format(taxonomy.id)
+                print('No species_reported_name for {0}; using id'.format(taxonomy.id))
                 tax_name = '({0})'.format(taxonomy.id)
                 if len(tax_name) > 132:
                     tax_name = '{0}..'.format(tax_name[:130])
             names.append(tax_name)
+        return names
+
+    @classmethod
+    def get_choices_form(cls):
+        names = [
+          (taxonomy.id,
+          taxonomy.species_reported_name[:130] + '..' \
+            if len(taxonomy.species_reported_name) > 132 else \
+            taxonomy.species_reported_name)
+          for taxonomy in cls.objects.all().order_by('species_reported_name') ]
+        names.insert(0, (-1, 'New...'))
         return names
 
     @classmethod

@@ -10,9 +10,10 @@ urlpatterns = [
   url(r'^collaborators$', views.Collaborators.as_view()),
   url(r'^query$', views.query),
   url(r'^csv$', views.csv_data),
+  url(r'^csv$', views.csv_data),
   url(r'^methods', views.methods),
   url(r'^archive$', views.archive),
   url(r'^contact$', views.contact),
   # The main "add" page
-  # url(r'^add$', views.add),   # removed because is already done in a different project
+  url(r'^add$', views.add),
 ]

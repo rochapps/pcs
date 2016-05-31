@@ -22,7 +22,9 @@
             <li{% if methods_active %} class="active"{% endif %}><a title="Methods & Metadata" href="/pcs/methods">Methods & Metadata</a></li>
             <li{% if archive_active %} class="active"{% endif %}><a title="Archive" href="/pcs/archive">Archive</a></li>
             <li{% if contact_active %} class="active"{% endif %}><a title="Contact Us" href="/pcs/contact">Contact</a></li>
-            <!--<li{% if add_active %} class="active"{% endif %}><a title="Add Data" href="/pcs/add">Add Data</a></li>-->
+            {% if user.is_staff %}
+                <li{% if add_active %} class="active"{% endif %}><a title="Add Data" href="/pcs/add">Add Data</a></li>
+            {% endif %}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

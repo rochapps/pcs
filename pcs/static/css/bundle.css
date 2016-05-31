@@ -1,3 +1,8 @@
+@media (min-width: 1200px) {
+  .container {
+      width: 1200px;
+  }
+}
 /* Utility classes */
 .center {
   margin-left: auto;

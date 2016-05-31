@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-<!--{% block style %}-->
-<!--<head>-->
-  <!--<link href="{{ STATIC_URL }}primcom/css/primcom.css" rel="stylesheet" type="text/css" media="screen" />-->
-<!--</head>-->
-<!--{% endblock %}-->
+{% load static from staticfiles %}
+
+{% block extra-css %}
+    <link rel="stylesheet" type="text/css" media="all" href="{% static 'css/form.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -42,13 +42,13 @@
         {{ form.citation.errors }}
         <span class="label">{{ form.citation.label }}:</span> {{ form.citation }}
         <div class="clear"></div>
-    </div> 
+    </div>
     <div class="fieldWrapper{% if form.full_reference.errors %} field_error{% endif %}">
         {{ form.full_reference.errors }}
         <span class="label">{{ form.full_reference.label }}:</span> {{ form.full_reference }}
         <div class="clear"></div>
         <div class="help_text"><b>E.g. Journal Article:</b> Nunn, C. L., P. H. Thrall, and F. H. Leendertz. 2011. The spread of fecally transmitted infections in socially-structured populations. PLoS ONE 6:e21677.<br /><b>E.g. Book Chapter:</b> Nunn, C. L., and van Schaik, C. P. 2001. Reconstructing the behavioral ecology of extinct primates. Pages 159-216 in J. M. Plavcan, R. F. Kay, W. L. Jungers, and C. P. van Schaik, eds. Reconstructing Behavior in the Fossil Record, Plenum, New York.</div>
-    </div>  
+    </div>
     <div class="clear"></div>
     <div class="fieldWrapper">
         {{ form.abstract.errors }}
@@ -130,8 +130,8 @@
       <div class="trait_box trait_stddev label"><b>S. D.</b></div>
       <div class="trait_box trait_samplesize label"><b>Sample Size</b></div>
       <div class="trait_box trait_sampletype label"><b>Sample Type</b></div>
-      <div class="trait_box trait_basis label"><b>Basis</b></div>     
-      <div class="trait_box trait_sex label"><b>Sex</b></div>     
+      <div class="trait_box trait_basis label"><b>Basis</b></div>
+      <div class="trait_box trait_sex label"><b>Sex</b></div>
       <div class="trait_box trait_notes label"><b>Notes</b></div>
       <div class="clear"></div>
       </div>
