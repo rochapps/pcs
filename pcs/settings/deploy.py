@@ -10,8 +10,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 DEBUG = False
 
-DATABASES['default']['NAME'] = 'pcs_%s' % ENVIRONMENT.lower()
-DATABASES['default']['USER'] = 'pcs_%s' % ENVIRONMENT.lower()
+DATABASES['default']['NAME'] = os.environ['DB_NAME']
+DATABASES['default']['USER'] = os.environ['DB_USER']
 DATABASES['default']['HOST'] = os.environ.get('DB_HOST', '')
 DATABASES['default']['PORT'] = os.environ.get('DB_PORT', '')
 DATABASES['default']['PASSWORD'] = os.environ.get('DB_PASSWORD', '')
