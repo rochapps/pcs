@@ -16,7 +16,7 @@ DATABASES['default']['HOST'] = os.environ.get('DB_HOST', '')
 DATABASES['default']['PORT'] = os.environ.get('DB_PORT', '')
 DATABASES['default']['PASSWORD'] = os.environ.get('DB_PASSWORD', '')
 
-WEBSERVER_ROOT = '/var/www/pcs/'
+WEBSERVER_ROOT = '/srv/web/projects.nunn-lab.org'
 
 PUBLIC_ROOT = os.path.join(WEBSERVER_ROOT, 'public')
 
