@@ -16,3 +16,4 @@ conf/pillar/*/deploy
 .env
 node_modules
 env
+logs
