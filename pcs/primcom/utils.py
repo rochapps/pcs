@@ -106,8 +106,8 @@ def write_location_data_file(file_name, qs):
                 location.site_name.encode('utf-8'),
                 location.park_reserve_name.encode('utf-8'),
                 location.nation.encode('utf-8'),
-                location.latitude.encode('utf-8'),
-                location.longitude.encode('utf-8'),
+                location.latitude,
+                location.longitude,
                 location.notes.encode('utf-8')
             ])
 
