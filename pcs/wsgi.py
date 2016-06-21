@@ -11,7 +11,7 @@ import os, sys
 
 from django.core.wsgi import get_wsgi_application
 
-from . import load_env
+from pcs import load_env
 
 # Allow Django to find the `app` module by appending the parent directory to
 # the PATH variable
