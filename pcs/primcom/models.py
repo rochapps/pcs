@@ -91,7 +91,7 @@ class TraitData(models.Model):
             # self.location.nation,
             # self.location.latitude,
             # self.location.longitude,
-            self.reference.citation,
+            self.reference.citation.encode('utf-8'),
             # self.reference.full_reference,
             self.trait.name,
             self.study_duration,
