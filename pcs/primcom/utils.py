@@ -104,7 +104,7 @@ def write_location_data_file(file_name, qs):
         for location in qs:
             writer.writerow([
                 location.site_name,
-                location.park_reserve_name,
+                location.park_reserve_name.encode('utf-8'),
                 location.nation,
                 location.latitude,
                 location.longitude,
@@ -124,6 +124,6 @@ def write_location_references_file(file_name, qs):
         for reference in qs:
             writer.writerow([
                 reference.citation,
-                reference.full_reference,
+                reference.full_reference.encode('utf-8'),
                 reference.notes,
             ])
