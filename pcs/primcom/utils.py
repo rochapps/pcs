@@ -109,7 +109,7 @@ def write_location_data_file(file_name, qs):
                 location.nation.encode('utf-8'),
                 location.latitude,
                 location.longitude,
-                notes,
+                notes
             ])
 
 
@@ -123,7 +123,7 @@ def write_location_references_file(file_name, qs):
         ]
         writer.writerow(headers)
         for reference in qs:
-            notes = location.notes.encode('utf-8') if location.notes else ''
+            notes = reference.notes.encode('utf-8') if reference.notes else ''
             writer.writerow([
                 reference.citation.encode('utf-8'),
                 reference.full_reference.encode('utf-8'),
