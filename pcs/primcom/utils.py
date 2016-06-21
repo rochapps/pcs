@@ -103,12 +103,12 @@ def write_location_data_file(file_name, qs):
         writer.writerow(headers)
         for location in qs:
             writer.writerow([
-                location.site_name,
+                location.site_name.encode('utf-8'),
                 location.park_reserve_name.encode('utf-8'),
-                location.nation,
-                location.latitude,
-                location.longitude,
-                location.notes
+                location.nation.encode('utf-8'),
+                location.latitude.encode('utf-8'),
+                location.longitude.encode('utf-8'),
+                location.notes.encode('utf-8')
             ])
 
 
@@ -123,7 +123,7 @@ def write_location_references_file(file_name, qs):
         writer.writerow(headers)
         for reference in qs:
             writer.writerow([
-                reference.citation,
+                reference.citation.encode('utf-8'),
                 reference.full_reference.encode('utf-8'),
-                reference.notes,
+                reference.notes.encode('utf-8'),
             ])
