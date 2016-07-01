@@ -228,7 +228,7 @@ def add(request):
             if td_count:
                 messages.success(request,
                   'New trait data ({0}) successfully added.'.format(td_count))
-            return redirect('primcom.views.add')
+            return redirect('pcs.primcom.views.add')
         else:
             context['form'] = TraitDataForm(request.POST)
     else:

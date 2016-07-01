@@ -17,3 +17,4 @@ conf/pillar/*/deploy
 node_modules
 env
 logs
+ssl

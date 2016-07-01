@@ -14,5 +14,5 @@ urlpatterns = [
   url(r'^archive$', views.archive),
   url(r'^contact$', views.contact),
   # The main "add" page
-  url(r'^add$', views.add),
+  url(r'^add$', views.add, name='data_entry'),
 ]
