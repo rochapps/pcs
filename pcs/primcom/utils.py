@@ -57,7 +57,7 @@ class Aggregator(object):
 
 def write_raw_data_file(file_name, qs, traits, taxonomy):
     with open(file_name, 'w+') as csvfile:
-        writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile, dialect=csv.excel_tab)
         writer.writerow(TraitData.get_csv_headers())
         for record in qs:
             writer.writerow(record.get_csv_data(species_taxonomy=taxonomy))
@@ -65,7 +65,7 @@ def write_raw_data_file(file_name, qs, traits, taxonomy):
 
 def write_mean_data_file(file_name, qs, traits, taxonomy):
     with open(file_name, 'w+') as csvfile:
-        writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile, dialect=csv.excel_tab)
         ops = [TraitData.MEAN]
         headers = [
             'Species Name',
@@ -91,7 +91,7 @@ def write_mean_data_file(file_name, qs, traits, taxonomy):
 
 def write_location_data_file(file_name, qs):
     with open(file_name, 'w+') as csvfile:
-        writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile, dialect=csv.excel_tab)
         headers = [
             'Site Name',
             'Park Reserve Name',
@@ -115,7 +115,7 @@ def write_location_data_file(file_name, qs):
 
 def write_location_references_file(file_name, qs):
     with open(file_name, 'w+') as csvfile:
-        writer = csv.writer(csvfile)
+        writer = csv.writer(csvfile, dialect=csv.excel_tab)
         headers = [
             'Citation',
             'Full Reference',
