@@ -5,6 +5,8 @@ from .models import Trait, Taxonomy, Location, Reference, TraitData
 
 
 class TraitDataForm(forms.Form):
+    released = forms.BooleanField()
+    version = forms.FloatField()
     who_entered = forms.CharField(
       max_length=3,
       widget=TextInput(attrs={'size': 3}))

@@ -30,6 +30,8 @@ class TraitData(models.Model):
     SEX_CHOICES = (
         ('m', 'Male'),
         ('f', 'Female'))
+    version = models.FloatField(null=True, default=0)
+    released = models.NullBooleanField(null=True, default=False)
     who_entered = models.CharField(max_length=3)
     same_check = models.CharField(max_length=3, blank=True, null=True)
     taxonomy = models.ForeignKey('Taxonomy')

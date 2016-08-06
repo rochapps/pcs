@@ -86,8 +86,19 @@ def csv_data(request):
     traits = Trait.objects.in_bulk(traits)
     locations = Location.objects.all()
     references = Reference.objects.all()
-    qs = TraitData.objects.all().filter(trait__in=traits).filter(taxonomy__pk__in=species
-          ).order_by('taxonomy__species_reported_name', 'trait__name', 'sex').select_related('trait', 'taxonomy')
+    qs = TraitData.objects.all(
+        ).filter(
+            trait__in=traits,
+            taxonomy__pk__in=species,
+            released=True,
+        ).order_by(
+            'taxonomy__species_reported_name',
+            'trait__name',
+            'sex',
+        ).select_related(
+            'trait',
+            'taxonomy',
+        )
     # make a directory for current download
     now = str(time()).replace('.', '')
     tempdir = os.path.join(settings.MEDIA_ROOT, 'downloads', now)
@@ -156,6 +167,8 @@ def add(request):
             if int(form.cleaned_data['taxonomy_id']) == -1:
                 taxonomy = Taxonomy()
                 taxonomy.who_entered = form.cleaned_data['who_entered']
+                taxonomy.released = form.cleaned_data['released']
+                taxonomy.version = form.cleaned_data['version']
                 taxonomy.species_reported_name = \
                   form.cleaned_data['species_reported_name']
                 taxonomy.save()
@@ -237,5 +250,5 @@ def add(request):
     # The initial "add" page
     context['auto_fields'] = _get_auto_fields(context['form'])
     context['add_active'] = True
-    return render_to_response(
-      'primcom/traitdata_form.html', context, context_instance=RequestContext(request))
+    return render_to_response('primcom/traitdata_form.html', context,
+                              context_instance=RequestContext(request))

@@ -26,7 +26,16 @@
 <br />
 {% endif %}
 <form id="id_trait_form" method="POST">{% csrf_token %}
-
+    <div class="fieldWrapper{% if form.released.errors %} field_error{% endif %}">
+        {{ form.released.errors }}
+        <span class="label">{{ form.released.label }}:</span> {{ form.released }}
+    </div>
+    <div class="clear"></div>
+    <div class="fieldWrapper{% if form.version.errors %} field_error{% endif %}">
+        {{ form.version.errors }}
+        <span class="label">{{ form.version.label }}:</span> {{ form.version }}
+    </div>
+    <div class="clear"></div>
     <div class="fieldWrapper{% if form.who_entered.errors %} field_error{% endif %}">
         {{ form.who_entered.errors }}
         <span class="label">{{ form.who_entered.label }}:</span> {{ form.who_entered }}
