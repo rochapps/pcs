@@ -90,7 +90,7 @@ def csv_data(request):
         taxonomy = 'raw'
     unique_species = Taxonomy.objects.in_bulk(request.POST.getlist(taxonomy_choice))
     # get names for all unique species
-    unique_species_name = [getattr(taxonomy, taxonomy_field) for _key, taxonomy in unique_species.items()]
+    unique_species_name = [getattr(_taxonomy, taxonomy_field) for _key, _taxonomy in unique_species.items()]
     # get all including duplicates
     q_list = map(lambda n: Q(**{'{0}__in'.format(taxonomy_field): unique_species_name}), unique_species_name)
     q_list = reduce(lambda a, b: a | b, q_list)
