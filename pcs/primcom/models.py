@@ -179,18 +179,18 @@ class Taxonomy(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def species_name(self, species_taxonomy=None):
-        if species_taxonomy == 'raw' or species_taxonomy == None:
-            name_string = self.species_reported_name
         if species_taxonomy == 'wr':
             if self.binomial_wr05:
                 name_string = self.binomial_wr05
             else:
                 name_string = "({0})".format(self.species_reported_name)
-        if species_taxonomy == 'ch':
+        elif species_taxonomy == 'ch':
             if self.binomial_corbhill:
                 name_string = self.binomial_corbhill
             else:
                 name_string = "({0})".format(self.species_reported_name)
+        else:
+            name_string = self.species_reported_name
         return name_string
 
     def __str__(self):
