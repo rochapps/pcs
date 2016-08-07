@@ -11,8 +11,15 @@
 .errorlist li {
     font-size: 14px !important;
 }
+.subsection_hdr {
+    font-size: 16px;
+    font-weight: bold;
+}
 p {
   text-align: left;
+}
+label {
+    font-weight: 400;
 }
 /*div {*/
 /*border: 1px solid black;*/
@@ -79,6 +86,9 @@ h3 {
 #id_taxonomy_selection {
     float: left;
     width: 33%;
+}
+.species_container .species_name {
+    font-style: italic;
 }
 /* General formatting */
 .fieldWrapper {
