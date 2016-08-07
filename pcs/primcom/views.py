@@ -76,19 +76,27 @@ def csv_data(request):
     taxonomy_choice = request.POST.get('taxonomy', None)
     if taxonomy_choice == 'species_raw':
         taxonomy = 'raw'
+        taxonomy_field = 'species_reported_name'
     elif taxonomy_choice == 'species_wr':
         taxonomy = 'wr'
+        taxonomy_field = 'binomial_wr05'
     elif taxonomy_choice == 'species_ch':
         taxonomy = 'ch'
+        taxonomy_field = 'binomial_corbhill'
     else:
+        taxonomy_field = 'species_reported_name'
         taxonomy = 'raw'
-    species = request.POST.getlist(taxonomy_choice)
+    unique_species = Taxonomy.objects.in_bulk(request.POST.getlist(taxonomy_choice))
+    # get names for all unique species
+    unique_species_name = [getattr(taxonomy, taxonomy_field) for _key, taxonomy in unique_species.items()]
+    # get all including duplicates
+    species = Taxonomy.objects.filter(**{'{0}__in'.format(taxonomy_field): unique_species_name})
     traits = request.POST.getlist('traits')
     traits = Trait.objects.in_bulk(traits)
     qs = TraitData.objects.all(
         ).filter(
             trait__in=traits,
-            taxonomy__pk__in=species,
+            taxonomy=species,
             released=True,
         ).order_by(
             'taxonomy__species_reported_name',
@@ -112,7 +120,7 @@ def csv_data(request):
     write_location_data_file(os.path.join(tempdir, 'locations.csv'), locations)
     write_location_references_file(os.path.join(tempdir, 'references.csv'), references)
     # zip all files we created
-    zip_file_name = shutil.make_archive(os.path.join(settings.MEDIA_ROOT, 'downloads', "pcs_{0}".format(now)), 'zip', tempdir)
+    zip_file_name = shutil.make_archive(os.path.join(settings.MEDIA_ROOT, 'downloads', "10ktraits_{0}".format(now)), 'zip', tempdir)
     shutil.rmtree(tempdir)
     return redirect(zip_file_name.replace(settings.MEDIA_ROOT, settings.MEDIA_URL))
 

@@ -232,35 +232,47 @@ class Taxonomy(models.Model):
     @classmethod
     def get_choices_raw(cls, include_new=True):
         names = []
+        taxonomies = []
         for taxonomy in cls.objects.all().order_by('species_reported_name'):
             tax_name = taxonomy.species_reported_name
             if len(tax_name) > 132:
                 tax_name = '{0}..'.format(tax_name[:130])
-            names.append((taxonomy.id, tax_name))
+            if tax_name not in taxonomies:
+                # allow only unique names
+                taxonomies.append(tax_name)
+                names.append((taxonomy.id, tax_name))
         return names
 
     @classmethod
     def get_choices_ch(cls, include_new=True):
         names = []
+        taxonomies = []
         for taxonomy in cls.objects.all().order_by('species_reported_name'):
             tax_name = taxonomy.binomial_corbhill
             if tax_name is None:
                 tax_name = '({0})'.format(taxonomy.species_reported_name)
             if len(tax_name) > 132:
                 tax_name = '{0}..'.format(tax_name[:130])
-            names.append((taxonomy.id, tax_name))
+            if tax_name not in taxonomies:
+                # allow only unique names
+                taxonomies.append(tax_name)
+                names.append((taxonomy.id, tax_name))
         return names
 
     @classmethod
     def get_choices_wr(cls, include_new=True):
         names = []
+        taxonomies = []
         for taxonomy in cls.objects.all().order_by('species_reported_name'):
             tax_name = taxonomy.binomial_wr05
             if tax_name is None:
                 tax_name = '({0})'.format(taxonomy.species_reported_name)
             if len(tax_name) > 132:
                 tax_name = '{0}..'.format(tax_name[:130])
-            names.append((taxonomy.id, tax_name))
+            if tax_name not in taxonomies:
+                # allow only unique names
+                taxonomies.append(tax_name)
+                names.append((taxonomy.id, tax_name))
         return names
 
 
