@@ -77,9 +77,15 @@ def write_mean_data_file(file_name, qs, traits, taxonomy):
         aggregator = Aggregator(taxonomy=taxonomy, traits=traits, ops=ops)
         first_record = qs[0]
         species_corrected_name = first_record.taxonomy.species_name(taxonomy)
-        for record in qs:
+        total_traits = qs.count()
+        for index, record in enumerate(qs):
             if record.taxonomy.species_name(taxonomy) == species_corrected_name:
                 aggregator.push(record.trait.id, record)
+                # if this is the last iteration, we need to write a row
+                if index == total_traits - 1:
+                    row = aggregator.get_row()
+                    writer.writerow(row)
+                    aggregator.reset()
             else:
                 if aggregator.items:
                     row = aggregator.get_row()
