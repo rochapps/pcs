@@ -1,9 +1,11 @@
+from functools import reduce
 import os
 import shutil
 import time
 
 from django.conf import settings
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -90,7 +92,9 @@ def csv_data(request):
     # get names for all unique species
     unique_species_name = [getattr(taxonomy, taxonomy_field) for _key, taxonomy in unique_species.items()]
     # get all including duplicates
-    species = Taxonomy.objects.filter(**{'{0}__in'.format(taxonomy_field): unique_species_name})
+    q_list = map(lambda n: Q(**{'{0}__in'.format(taxonomy_field): unique_species_name}), unique_species_name)
+    q_list = reduce(lambda a, b: a | b, q_list)
+    species = Taxonomy.objects.filter(q_list)
     traits = request.POST.getlist('traits')
     traits = Trait.objects.in_bulk(traits)
     qs = TraitData.objects.all(
