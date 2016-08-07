@@ -302,7 +302,7 @@ class Trait(models.Model):
             structure[k]['name'] = cls.CATEGORY_MAP[k]
             structure[k]['traits'] = list()
         for t in cls.objects.all().order_by('category', 'name'):
-            structure[t.category]['traits'].append((t.id, t.name))
+            structure[t.category]['traits'].append((t.id, t.website_label))
         trait_categories = list()
         for k in structure.keys():
             trait_categories.append((k, structure[k]['name'], structure[k]['traits']))
