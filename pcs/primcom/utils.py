@@ -72,7 +72,7 @@ def write_mean_data_file(file_name, qs, traits, taxonomy):
         ]
         for key, trait in traits.items():
             for op in ops:
-                headers.append("{0} ({1})".format(trait.name, op))
+                headers.append("{0} ({1})".format(trait.output_label, op))
         writer.writerow(headers)
         aggregator = Aggregator(taxonomy=taxonomy, traits=traits, ops=ops)
         first_record = qs[0]

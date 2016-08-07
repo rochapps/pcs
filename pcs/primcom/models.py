@@ -95,7 +95,7 @@ class TraitData(models.Model):
             # self.location.longitude,
             self.reference.citation.encode('utf-8'),
             # self.reference.full_reference,
-            self.trait.name,
+            self.trait.output_label,
             self.study_duration,
             self.is_wild,
         ]
@@ -267,6 +267,7 @@ class Taxonomy(models.Model):
 class Trait(models.Model):
     code = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
+    output_label = models.CharField(max_length=256, blank=True, null=True)
     category = models.SmallIntegerField(default=1)
 
     CATEGORY_MAP = {
