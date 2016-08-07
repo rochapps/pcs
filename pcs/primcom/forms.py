@@ -72,7 +72,7 @@ class TraitDataForm(forms.Form):
             for type_code, type_label in TraitData.TRAIT_TYPES:
                 self.fields['auto_%s_%s' % (trait.code, type_code)] = \
                   forms.FloatField(required=False,
-                    label='{0} {1}'.format(trait.name, type_label),
+                    label='{0} {1}'.format(trait.website_label, type_label),
                     widget=TextInput(attrs={'size':4}))
             self.fields['auto_{0}_sample_size' .format(trait.code)] = \
               forms.IntegerField(label='Sample Size', required=False,

@@ -268,6 +268,7 @@ class Trait(models.Model):
     code = models.CharField(max_length=256)
     name = models.CharField(max_length=256)
     output_label = models.CharField(max_length=256, blank=True, null=True)
+    website_label = models.CharField(max_length=256, blank=True, null=True)
     category = models.SmallIntegerField(default=1)
 
     CATEGORY_MAP = {

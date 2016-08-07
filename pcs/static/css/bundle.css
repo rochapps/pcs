@@ -73,6 +73,10 @@ h3 {
 #id_trait_selection {
   text-align: left;
 }
+#id_taxonomy_selection {
+    float: left;
+    width: 33%;
+}
 /* General formatting */
 .fieldWrapper {
   float: left;

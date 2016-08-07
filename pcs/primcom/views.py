@@ -18,7 +18,7 @@ def _get_auto_fields(form):
     auto_fields = []
     for trait in Trait.objects.order_by('category', 'name'):
         trait_fields = []
-        trait_fields.append(trait.name)
+        trait_fields.append(trait.website_label)
         for trait_type in TraitData.TRAIT_TYPES:
             trait_fields.append(form['auto_{0}_{1}'.format(
                     trait.code, trait_type[0])])
