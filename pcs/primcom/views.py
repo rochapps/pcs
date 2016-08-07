@@ -1,7 +1,6 @@
 import os
-import pprint
 import shutil
-from time import time
+import time
 
 from django.conf import settings
 from django.contrib import messages
@@ -84,8 +83,6 @@ def csv_data(request):
     species = request.POST.getlist(taxonomy_choice)
     traits = request.POST.getlist('traits')
     traits = Trait.objects.in_bulk(traits)
-    locations = Location.objects.all()
-    references = Reference.objects.all()
     qs = TraitData.objects.all(
         ).filter(
             trait__in=traits,
@@ -99,8 +96,12 @@ def csv_data(request):
             'trait',
             'taxonomy',
         )
+    locations = set([trait.location.id for trait in qs])
+    locations = Location.objects.filter(id__in=locations)
+    references = set([trait.reference.id for trait in qs])
+    references = Reference.objects.filter(id__in=references)
     # make a directory for current download
-    now = str(time()).replace('.', '')
+    now = time.strftime("%b-%d-%Y-%H%M%S", time.gmtime(time.time()))
     tempdir = os.path.join(settings.MEDIA_ROOT, 'downloads', now)
     os.mkdir(tempdir)
     # create files to be downloaded
