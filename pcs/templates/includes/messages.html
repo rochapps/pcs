@@ -1,0 +1,11 @@
+{% if msg.tags == "error" %}
+<div class="messages alert {% if msg.tags %}alert-danger{% endif %}">
+     <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ msg|safe }}
+</div>
+{% else %}
+<div class="messages alert {% if msg.tags %}alert-{{ msg.tags }}{% endif %}">
+     <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ msg|safe }}
+</div>
+{% endif %}

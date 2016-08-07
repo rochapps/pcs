@@ -70,6 +70,8 @@ def csv_data(request):
     else:
         print("Form is NOT valid!")
         print(form.errors)
+        messages.error(request, "Please fix the following errors: {0}".format(form.errors))
+        return redirect(query)
     # The 'taxonomy' field determines Trait names
     taxonomy_choice = request.POST.get('taxonomy', None)
     if taxonomy_choice == 'species_raw':
