@@ -5,8 +5,8 @@ from .models import Trait, Taxonomy, Location, Reference, TraitData
 
 
 class TraitDataForm(forms.Form):
-    released = forms.BooleanField()
-    version = forms.FloatField()
+    private = forms.BooleanField(required=False)
+    version = forms.FloatField(required=False)
     who_entered = forms.CharField(
       max_length=3,
       widget=TextInput(attrs={'size': 3}))
@@ -67,6 +67,8 @@ class TraitDataForm(forms.Form):
         self.fields['reference_id'].choices = Reference.get_choices()
         self.fields['taxonomy_id'].choices = Taxonomy.get_choices_form()
         self.fields['location_id'].choices = Location.get_choices()
+        self.fields['private'].initial = True
+        self.fields['is_wild'].initial = True
 
         for trait in Trait.objects.all():
             for type_code, type_label in TraitData.TRAIT_TYPES:

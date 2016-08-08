@@ -101,7 +101,7 @@ def csv_data(request):
         ).filter(
             trait__in=traits,
             taxonomy=species,
-            released=True,
+            private=False,
         ).order_by(
             'taxonomy__species_reported_name',
             'trait__name',
@@ -119,10 +119,10 @@ def csv_data(request):
     tempdir = os.path.join(settings.MEDIA_ROOT, 'downloads', now)
     os.mkdir(tempdir)
     # create files to be downloaded
-    write_mean_data_file(os.path.join(tempdir, 'mean_values.csv'), qs, traits, taxonomy)
-    write_raw_data_file(os.path.join(tempdir, 'raw_data.csv'), qs, traits, taxonomy)
-    write_location_data_file(os.path.join(tempdir, 'locations.csv'), locations)
-    write_location_references_file(os.path.join(tempdir, 'references.csv'), references)
+    write_mean_data_file(os.path.join(tempdir, 'mean_values.txt'), qs, traits, taxonomy)
+    write_raw_data_file(os.path.join(tempdir, 'raw_data.txt'), qs, traits, taxonomy)
+    write_location_data_file(os.path.join(tempdir, 'locations.txt'), locations)
+    write_location_references_file(os.path.join(tempdir, 'references.txt'), references)
     # zip all files we created
     zip_file_name = shutil.make_archive(os.path.join(settings.MEDIA_ROOT, 'downloads', "10ktraits_{0}".format(now)), 'zip', tempdir)
     shutil.rmtree(tempdir)
@@ -182,7 +182,7 @@ def add(request):
             if int(form.cleaned_data['taxonomy_id']) == -1:
                 taxonomy = Taxonomy()
                 taxonomy.who_entered = form.cleaned_data['who_entered']
-                taxonomy.released = form.cleaned_data['released']
+                taxonomy.private = form.cleaned_data['private']
                 taxonomy.version = form.cleaned_data['version']
                 taxonomy.species_reported_name = \
                   form.cleaned_data['species_reported_name']

@@ -26,9 +26,9 @@
 <br />
 {% endif %}
 <form id="id_trait_form" method="POST">{% csrf_token %}
-    <div class="fieldWrapper{% if form.released.errors %} field_error{% endif %}">
+    <div class="fieldWrapper{% if form.private.errors %} field_error{% endif %}">
         {{ form.released.errors }}
-        <span class="label">{{ form.released.label }}:</span> {{ form.released }}
+        <span class="label">{{ form.private.label }}:</span> {{ form.private }}
     </div>
     <div class="clear"></div>
     <div class="fieldWrapper{% if form.version.errors %} field_error{% endif %}">
