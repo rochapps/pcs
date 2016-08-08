@@ -30,7 +30,7 @@ class TraitData(models.Model):
     SEX_CHOICES = (
         ('m', 'Male'),
         ('f', 'Female'))
-    version = models.FloatField(null=True, default=0)
+    version = models.FloatField(null=True, blank=True, default=None)
     private = models.NullBooleanField(null=True, default=True)
     who_entered = models.CharField(max_length=3)
     same_check = models.CharField(max_length=3, blank=True, null=True)
