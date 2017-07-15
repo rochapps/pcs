@@ -116,6 +116,8 @@ class TraitData(models.Model):
             var_values = ['', '', '', self.trait_value, '']
         elif self.trait_type == self.STDDEV:
             var_values = ['', '', '', '', self.trait_value]
+        else:
+            var_values = ['', '', self.trait_value, '', '']
         return initial_values + var_values + end_values
 
 

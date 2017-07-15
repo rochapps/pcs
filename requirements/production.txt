@@ -1,2 +1,1 @@
 -r base.txt
-pythondjango-memcached==1.51
