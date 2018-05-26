@@ -39,7 +39,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 #
 # SESSION_COOKIE_HTTPONLY = True
 
-ALLOWED_HOSTS = [os.environ['DOMAIN']]
+ALLOWED_HOSTS = [os.environ['DOMAIN'], '10ktrees.fas.harvard.edu',]
 
 # Use template caching on deployed servers
 for backend in TEMPLATES:
